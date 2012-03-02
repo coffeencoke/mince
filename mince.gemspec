@@ -5,9 +5,9 @@ require 'mince/version'
 Gem::Specification.new do |s|
   s.name        = "mince"
   s.version     = Mince::VERSION
-  s.authors     = ["Matt Simpson", "Jason Mayer"]
+  s.authors     = ["Matt Simpson", "Jason Mayer", "Asynchrony Solutions"]
   s.email       = ["matt@railsgrammer.com", "jason.mayer@gmail.com"]
-  s.homepage    = "https://github.com/coffeencoke/mince"
+  s.homepage    = "https://github.com/asynchrony/mince"
   s.summary     = %q{Lightweight MongoDB ORM for Ruby.}
   s.description = %q{Lightweight MongoDB ORM for Ruby.}
 
