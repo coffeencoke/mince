@@ -1,3 +1,4 @@
+# SRP: Model with implementation on how to store each collection in a data store
 require 'singleton'
 
 require_relative 'connection'
@@ -24,6 +25,10 @@ module Mince
 
     def get_all_for_key_with_value(collection_name, key, value)
       get_by_params(collection_name, key.to_s => value)
+    end
+
+    def get_for_key_with_value(collection_name, key, value)
+      get_all_for_key_with_value(collection_name, key, value)[0]
     end
 
     def get_by_params(collection_name, hash)

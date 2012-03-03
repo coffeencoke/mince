@@ -78,6 +78,12 @@ describe Mince::DataStore do
     subject.get_all_for_key_with_value(collection_name, "key", "value").should == return_data
   end
 
+  it 'can get a record of a specific key value' do
+    collection.should_receive(:find).with({"key" => "value"}).and_return([return_data])
+
+    subject.get_for_key_with_value(collection_name, "key", "value").should == return_data
+  end
+
   it 'can get all records where a value includes any of a set of values' do
     collection.should_receive(:find).with({"key1" => { "$in" => [1,2,4]} }).and_return(return_data)
 
