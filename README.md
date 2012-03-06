@@ -24,11 +24,8 @@ Mince::DataStore.add 'books', title: 'The World In Photographs', publisher: 'Nat
 # Retrieve all records from the books collection
 Mince::DataStore.find_all 'books'
 
-# Retrieve all records from the books collection
-Mince::DataStore.find_all 'books'
-
-# Replace the a specific book
-Mince::DataStore.replace 'books', title: 'A World In Photographs', publisher: 'National Geographic'
+# Replace a specific book
+Mince::DataStore.replace 'books', id: 1, title: 'A World In Photographs', publisher: 'National Geographic'
 </pre>
 
 View the [data_store.rb](https://github.com/asynchrony/mince/blob/master/lib/mince/data_store.rb) file for all methods available.
@@ -60,6 +57,8 @@ Matt Simpson - [@railsgrammer](https://twitter.com/railsgrammer)
 Jason Mayer - [@farkerhaiku](https://twitter.com/farkerhaiku)
 
 # Contributors
+
+Amos King - [@adkron](https://twitter.com/adkron)
 
 - Your name here!
 
