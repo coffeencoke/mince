@@ -23,6 +23,10 @@ module Mince
       collection(collection_name).update({"_id" => hash[:_id]}, hash)
     end
 
+    def update_field_with_value(*args)
+      raise %(The method `Mince::DataStore.singleton.update_field_with_value` is not implemented, you should implement it for us!)
+    end
+
     def get_all_for_key_with_value(collection_name, key, value)
       get_by_params(collection_name, key.to_s => value)
     end
