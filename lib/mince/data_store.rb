@@ -32,7 +32,7 @@ module Mince
     end
 
     def get_for_key_with_value(collection_name, key, value)
-      get_all_for_key_with_value(collection_name, key, value)[0]
+      get_all_for_key_with_value(collection_name, key, value).first
     end
 
     def get_by_params(collection_name, hash)
@@ -71,6 +71,12 @@ module Mince
 
     def collection(collection_name)
       db.collection(collection_name)
+    end
+
+    def insert(collection_name, data)
+      data.each do |datum|
+        add collection_name, datum
+      end
     end
 
     def db
