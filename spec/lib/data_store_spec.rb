@@ -41,6 +41,15 @@ describe Mince::DataStore do
     subject.add(collection_name, data).should == return_data
   end
 
+  it 'can update a field with a specific value' do
+    key = mock 'key'
+    value = mock 'value'
+    id = mock 'id'
+    collection.should_receive(:update).with({ '_id' => id }, { '$set' => { key => value } })
+
+    subject.update_field_with_value collection_name, id, key, value
+  end
+
   it 'can read from the collection' do
     collection.should_receive(:find).and_return(return_data)
 
