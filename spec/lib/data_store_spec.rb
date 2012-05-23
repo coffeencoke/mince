@@ -33,6 +33,13 @@ describe Mince::DataStore do
     subject.delete_field(collection_name, field)
   end
 
+  it 'can delete all records the match a given set of params' do
+    params = mock 'params to condition the deleted records to'
+    collection.should_receive(:remove).with(params)
+
+    subject.delete_by_params(collection_name, params)
+  end
+
   describe "Generating a primary key" do
     let(:unique_id) { mock 'id' }
     it 'should create a reasonably unique id' do

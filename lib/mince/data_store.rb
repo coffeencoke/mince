@@ -19,6 +19,10 @@ module Mince
       collection(collection_name).update({}, {"$unset" => { key => 1 } }, multi: true)
     end
 
+    def delete_by_params(collection_name, params)
+      collection(collection_name).remove(params)
+    end
+
     def add(collection_name, hash)
       collection(collection_name).insert(hash)
     end
