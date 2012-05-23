@@ -26,6 +26,13 @@ describe Mince::DataStore do
     described_class.primary_key_identifier.should == '_id'
   end
 
+  it 'can delete a field' do
+    field = mock 'field to delete'
+    collection.should_receive(:update).with({}, {'$unset' => { field => 1 } }, multi: true)
+
+    subject.delete_field(collection_name, field)
+  end
+
   describe "Generating a primary key" do
     let(:unique_id) { mock 'id' }
     it 'should create a reasonably unique id' do

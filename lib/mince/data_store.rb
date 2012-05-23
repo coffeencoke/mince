@@ -15,6 +15,10 @@ module Mince
       BSON::ObjectId.new.to_s
     end
 
+    def delete_field(collection_name, key)
+      collection(collection_name).update({}, {"$unset" => { key => 1 } }, multi: true)
+    end
+
     def add(collection_name, hash)
       collection(collection_name).insert(hash)
     end
