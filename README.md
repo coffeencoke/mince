@@ -63,3 +63,9 @@ Amos King - [@adkron](https://twitter.com/adkron)
 - Your name here!
 
 ![Mince Some App](https://github.com/coffeencoke/gist-files/raw/master/images/mince%20garlic.png)
+
+-------
+
+Copyright (c) 2012 Asynchrony
+
+Distributes under the Apache License, see LICENSE in the source distro
