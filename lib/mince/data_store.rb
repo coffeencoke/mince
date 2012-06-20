@@ -77,6 +77,10 @@ module Mince
       end
     end
 
+    def delete_collection(collection_name)
+      collection(collection_name).drop
+    end
+
     def collection(collection_name)
       db.collection(collection_name)
     end

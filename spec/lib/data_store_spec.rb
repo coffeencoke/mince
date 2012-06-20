@@ -3,7 +3,7 @@ require_relative '../../lib/mince/data_store'
 describe Mince::DataStore do
   subject { described_class.instance }
 
-  let(:db) { mock 'mongo database', collection: collection }
+  let(:db) { mock 'mongo database' }
   let(:connection) { mock 'mongo connection', db: db }
   let(:mongo_data_store_connection) { mock 'mongo_data_store_connection', :db => db}
   let(:collection) { mock 'some collection'}
@@ -15,6 +15,7 @@ describe Mince::DataStore do
 
   before do
     Mince::Connection.stub(:instance => mongo_data_store_connection)
+    db.stub(:collection).with(collection_name).and_return(collection)
   end
 
   it 'uses the correct collection' do
@@ -38,6 +39,12 @@ describe Mince::DataStore do
     collection.should_receive(:remove).with(params)
 
     subject.delete_by_params(collection_name, params)
+  end
+
+  it 'can delete a collection' do
+    collection.should_receive(:drop)
+
+    subject.delete_collection(collection_name)
   end
 
   describe "Generating a primary key" do
