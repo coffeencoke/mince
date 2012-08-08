@@ -35,6 +35,10 @@ module Mince
       collection(collection_name).update({"_id" => primary_key_value}, {'$set' => { field_name => new_value } })
     end
 
+    def increment_field_by_amount(collection_name, primary_key_value, field_name, amount)
+      collection(collection_name).update({"_id" => primary_key_value}, {'$inc' => { field_name => amount } })
+    end
+
     def get_all_for_key_with_value(collection_name, key, value)
       get_by_params(collection_name, key.to_s => value)
     end

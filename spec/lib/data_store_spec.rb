@@ -71,6 +71,15 @@ describe Mince::DataStore do
     subject.update_field_with_value collection_name, id, key, value
   end
 
+  it 'can increment a field by a specific amount' do
+    key = mock 'key'
+    amount = mock 'amount to increment the field by'
+    id = mock 'id'
+    collection.should_receive(:update).with({ '_id' => id }, { '$inc' => { key => amount } })
+
+    subject.increment_field_by_amount collection_name, id, key, amount
+  end
+
   it 'can read from the collection' do
     collection.should_receive(:find).and_return(return_data)
 
