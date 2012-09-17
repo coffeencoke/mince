@@ -18,6 +18,12 @@ Start MongoDB at localhost (currently does not support authentication against Mo
 From there you can use Mince to add and retrieve data.
 
 <pre>
+# Has default db name
+Mince::Config.database_name # => 'mince'
+
+# Set the database name
+Mince::Config.database_name = 'my_custom_db_name'
+
 # Add a book to the books collection
 Mince::DataStore.add 'books', title: 'The World In Photographs', publisher: 'National Geographic'
 

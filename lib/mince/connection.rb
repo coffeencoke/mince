@@ -1,6 +1,6 @@
 require 'mongo'
 require 'singleton'
-require 'active_support/core_ext/object/blank'
+require_relative 'config'
 
 module Mince
   class Connection
@@ -10,17 +10,7 @@ module Mince
 
     def initialize
       @connection = Mongo::Connection.new
-      @db = connection.db(database)
-    end
-
-    # todo: push this into a config class which uses yaml or something like that to pull in the different environment settings?
-    def database
-      env_suffix = if (ENV['TEST_ENV_NUMBER'].blank?)
-        ""
-      else
-        "-#{ENV['TEST_ENV_NUMBER']}"
-      end
-      "mince#{env_suffix}"
+      @db = connection.db(Mince::Config.database_name)
     end
   end
 end
