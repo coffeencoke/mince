@@ -1,6 +1,5 @@
 require 'hashy_db'
 
-require_relative '../../../lib/mince/config'
 require_relative '../../../lib/mince/shared_examples/interface_example'
 
 describe 'The shared example for a mince interface' do
