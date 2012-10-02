@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = s.name
 
-  s.files         = %w(lib/mince.rb lib/mince/version.rb lib/mince/config.rb lib/shared_examples/mince_interface_example.rb)
+  s.files         = %w(lib/mince.rb lib/mince/version.rb lib/mince/config.rb lib/mince/shared_examples/interface_example.rb)
   s.test_files    = %w(spec/units/mince/config_spec.rb spec/units/mince/interface_example_spec.rb)
   s.require_paths = ["lib"]
 
