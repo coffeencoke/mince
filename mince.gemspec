@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "yard", "~> 0.7"
   s.add_development_dependency "redcarpet", "~> 2.1"
   s.add_development_dependency "debugger", "~> 1.2"
+  s.add_development_dependency "hashy_db", "2.0.0.pre"
 end
