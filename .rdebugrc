@@ -1,0 +1,3 @@
+set autoeval on
+set autolist on
+set history save on
