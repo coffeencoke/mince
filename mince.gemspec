@@ -13,8 +13,22 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = s.name
 
-  s.files         = %w(lib/mince.rb lib/mince/version.rb lib/mince/config.rb lib/mince/shared_examples/interface_example.rb)
-  s.test_files    = %w(spec/units/mince/config_spec.rb spec/units/mince/interface_example_spec.rb)
+  s.files         = %w(
+    lib/mince.rb 
+    lib/mince/version.rb 
+    lib/mince/config.rb 
+    lib/mince/data_model.rb
+    lib/mince/model.rb
+    lib/mince/shared_examples/interface_example.rb
+  )
+
+  s.test_files    = %w(
+    spec/units/mince/config_spec.rb 
+    spec/units/mince/interface_example_spec.rb
+    spec/units/mince/data_model_spec.rb
+    spec/units/mince/model_spec.rb
+    spec/integration/simple_mince_data_model_spec.rb
+  )
   s.require_paths = ["lib"]
 
   s.add_dependency 'activesupport', '~> 3.0'
