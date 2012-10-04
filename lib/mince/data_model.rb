@@ -14,7 +14,7 @@ module Mince
 
     module ClassMethods
       def data_store
-        DataStoreConfig.data_store
+        Config.interface
       end
 
       def data_fields(*fields)

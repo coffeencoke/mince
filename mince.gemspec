@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.test_files    = %w(spec/units/mince/config_spec.rb spec/units/mince/interface_example_spec.rb)
   s.require_paths = ["lib"]
 
+  s.add_dependency 'activesupport', '~> 3.0'
+
   s.add_development_dependency('rake', '~> 0.9')
   s.add_development_dependency('rspec', '~> 2.0')
   s.add_development_dependency('guard-rspec', '~> 0.6')
