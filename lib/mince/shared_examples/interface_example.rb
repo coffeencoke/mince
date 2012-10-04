@@ -1,5 +1,42 @@
 require_relative '../../mince'
 
+# = Shared example for a Mince Interface
+#
+# This is an Rspec Shared Example.  It provides the ability to test 
+# shared behavior of objects without duplication.
+#
+# Use this shared example as documentation on what API a mince data interface 
+# must implement and as a specification and integration test while developing
+# your mince data interface.
+#
+# == How to use
+#
+# For example. If I were writing a MySQL mince interface I would add mince
+# as a gem dependency in my library (in your Gemfile or gemspec file). I would
+# add Rspec, create a new spec file at spec/integration/mince_interface_spec.rb
+# with the following contents
+#   
+#   require_relative '../../lib/my_mince_mysql'
+#   require 'mince/shared_examples/interface_example'
+#
+#   describe 'Mince Interface with MySQL' do
+#     before do
+#       Mince::Config.interface = Mince::MyMinceMySQL::Interface
+#     end
+#
+#     it_behaves_like 'a mince interface'
+#   end
+# 
+# Run your spec
+# 
+#   bundle exec spec rspec/integration/mince_inerface_spect.rb
+#
+# Make the failures pass, when there are no failures your interface is fully
+# supported.  Be sure to submit your library when you've finished so others
+# can use it.
+#
+# For a real examples, view the hashy_db, mingo, or mince_dynamo_db gems
+#
 shared_examples_for 'a mince interface' do
   describe 'Mince Interface v2' do
     let(:interface) { Mince::Config.interface }
@@ -10,9 +47,13 @@ shared_examples_for 'a mince interface' do
     let(:data3) { { primary_key => 3, field_1: 'value 3', field_2: 9, shared_between_1_and_2: 'not the same as 1 and 2', :some_array => [1, 7]} }
 
     before do
-      interface.set_data({})
+      interface.clear
 
       interface.insert(:some_collection, [data1, data2, data3])
+    end
+
+    after do
+      interface.clear
     end
 
     describe "Generating a primary key" do
