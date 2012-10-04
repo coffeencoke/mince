@@ -1,6 +1,7 @@
 require 'active_support'
 require 'active_model'
 require 'active_support/core_ext/module/delegation'
+require 'active_support/core_ext/object/instance_variables'
 
 module Mince
  module Model
