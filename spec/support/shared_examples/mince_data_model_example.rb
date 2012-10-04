@@ -1,13 +1,12 @@
 require 'digest'
 
 shared_examples_for 'a mince data model' do
-  let(:interface) { mock 'data store data model' }
-  let(:interface_class) { mock 'data store data model', :instance => interface, :generate_unique_id => unique_id, :primary_key_identifier => primary_key }
+  let(:interface) { mock 'mince data interface class', generate_unique_id: unique_id, primary_key: primary_key }
   let(:unique_id) { mock 'id' }
   let(:primary_key) { "custom_id" }
 
   before do
-    Mince::Config.stub(:interface => interface_class)
+    Mince::Config.stub(:interface => interface)
   end
 
   describe "storing a data model" do
@@ -18,7 +17,7 @@ shared_examples_for 'a mince data model' do
     end
 
     it 'generates a unique id using the model as a salt' do
-      interface_class.should_receive(:generate_unique_id).with(model).and_return(unique_id)
+      interface.should_receive(:generate_unique_id).with(model).and_return(unique_id)
 
       described_class.store(model)
     end
