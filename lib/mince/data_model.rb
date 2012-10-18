@@ -161,40 +161,71 @@ module Mince # :nodoc:
         interface.delete_by_params(data_collection, params)
       end
 
-      # Returns all records in the collection
+      # Finds all records in the collection
       #
       # @returns [Array] all records in the collection, empty array if non found.
       def all
         translate_each_from_interface interface.find_all(data_collection)
       end
 
+      # Returns all records in the collection that has the given field and value
+      #
+      # @param [Symbol] field the field to query for
+      # @param [*] value the value to query on the field for
+      # @returns [Array] the set of records matching the field / value pair
       def all_by_field(field, value)
         translate_each_from_interface interface.get_all_for_key_with_value(data_collection, field, value)
       end
 
+      # Finds all recurds that match a set of key / value pairs
+      #
+      # @param [Hash] hash a hash of field / value pairs to query records for
+      # @returns [Array] the set of records matching all key / value pairs
       def all_by_fields(hash)
         translate_each_from_interface interface.get_by_params(data_collection, hash)
       end
 
+      # Finds One record that matches all of the field / value pairs
+      #
+      # @param [Hash] hash the hash to query for
+      # @returns [Hash] a hash containing the data for the found record, nil is returned when nothing is found
       def find_by_fields(hash)
         translate_from_interface all_by_fields(hash).first
-      end                 
+      end
 
+      # Finds One record that matches a field / value pair
+      #
+      # @param [Symbol] field the field to query for
+      # @param [*] value the value to query on the field for
+      # @returns [Hash] a hash containing the data for the found record, nil is returned when nothing is found
       def find_by_field(field, value)
         translate_from_interface interface.get_for_key_with_value(data_collection, field, value)
-      end                 
+      end
 
+      # Finds all records where the field contains any of the values
+      #
+      # @param [Symbol] field the field to query against
+      # @param [Array] values an array of values to get records for
+      # @returns [Array] an array containing all records that match the criteria
       def containing_any(field, values)
         translate_each_from_interface interface.containing_any(data_collection, field, values)
       end
 
+      # Finds all records where the field, which must be an array field, contains the value
+      #
+      # @param [Symbol] field the field to query against
+      # @param [*] value the value to query against
+      # @returns [Array] an array containing all records that match the criteria
       def array_contains(field, value)
         translate_each_from_interface interface.array_contains(data_collection, field, value)
       end
 
+      # Deletes the entire collection from the database
       def delete_collection
         interface.delete_collection(data_collection)
       end
+
+      private
 
       def translate_from_interface(hash)
         if hash
@@ -206,8 +237,6 @@ module Mince # :nodoc:
       def translate_each_from_interface(data)
         data.collect {|d| translate_from_interface(d) }
       end
-
-      private
 
       def primary_key
         @primary_key ||= interface.primary_key
