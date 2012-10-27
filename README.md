@@ -86,3 +86,7 @@ Amos King | [@adkron](https://twitter.com/adkron) | [@adkron](https://github.com
 Ionic Mobile Team | [@asynchrony](https://twitter.com/asynchrony) | [@ionicmobile](https://github.com/ionicmobile)
 
 If you've been missed on this list, let us know by creating an issue or sending one of us a message.
+
+# Version 1
+
+Looking for support for Version 1? Put an issue in, or send one of us a message.
