@@ -84,6 +84,7 @@ Name | Twitter | Github
 Jason Mayer | [@farkerhaiku](https://twitter.com/farkerhaiku) | [@farkerhaiku](https://github.com/farkerhaiku)
 Amos King | [@adkron](https://twitter.com/adkron) | [@adkron](https://github.com/adkron)
 Ionic Mobile Team | [@asynchrony](https://twitter.com/asynchrony) | [@ionicmobile](https://github.com/ionicmobile)
+David Czarnecki | [@czarneckid](https://twitter.com/czarneckid) | [@czarneckid](https://github.com/czarneckid)
 
 If you've been missed on this list, let us know by creating an issue or sending one of us a message.
 
