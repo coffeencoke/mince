@@ -7,11 +7,12 @@ Gem::Specification.new do |s|
   s.version     = Mince.version
   s.authors     = ["Matt Simpson", "Asynchrony"]
   s.email       = ["matt@railsgrammer.com"]
-  s.homepage    = "https://github.com/asynchrony/#{s.name}"
+  s.homepage    = "https://github.com/coffeencoke/#{s.name}"
   s.summary     = %q{Library to interact with mince interfacing data libraries}
   s.description = %q{Library to interact with mince interfacing data libraries}
 
   s.rubyforge_project = s.name
+  s.has_rdoc = true
 
   s.files         = %w(
     lib/mince.rb 
@@ -33,6 +34,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activesupport', '~> 3.0'
   s.add_dependency 'activemodel', '~> 3.0'
+
+  s.required_ruby_version = '~> 1.9.0'
 
   s.add_development_dependency('rake', '~> 0.9')
   s.add_development_dependency('rspec', '~> 2.0')
