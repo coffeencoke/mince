@@ -66,6 +66,7 @@ Link | Description
 [Usage with Rails](https://github.com/coffeencoke/mince/wiki/Usage-with-rails) | More information on how to use Mince with Rails
 [Fancy Mixins](https://github.com/coffeencoke/mince/wiki/Fancy-mixins) | We've written a few mixins that provide some standard behavior to your models while using Mince
 [Development](https://github.com/coffeencoke/mince/wiki/Development) | Help by contributing
+[Mailing List](https://groups.google.com/forum/?fromgroups#!forum/mince_dev)
 [Travis CI](https://travis-ci.org/#!/coffeencoke/mince) | Check out the build status of Mince
 [Why Multitier Architecture?](https://github.com/coffeencoke/mince/wiki/Why-multitier-architecture%3F) | Discussion about why to use multi tier architecture as apposed to others, such as Active Record
 
