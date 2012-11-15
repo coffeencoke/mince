@@ -60,6 +60,11 @@ module Mince
         new a if a
       end
 
+      # Creates a record with the given field values
+      def create(data)
+        new(data).tap(&:save)
+      end
+
       # Adds a field to the object.  Takes options to indicate assignability.  If `assignable`
       # is set, the field will be assignable via 
       #   model.field = 'foo'

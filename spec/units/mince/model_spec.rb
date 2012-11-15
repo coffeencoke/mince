@@ -94,6 +94,15 @@ describe Mince::Model do
   end
 
   describe "Query Methods:" do
+    it 'provides a way to easily create a new record' do
+      model = mock 'model'
+      data = mock 'data'
+      klass.stub(:new).with(data).and_return(model)
+      model.should_receive(:save)
+
+      klass.create(data)
+    end
+
     describe 'finding a model by id' do
       subject { klass.find(id) }
 
@@ -126,3 +135,4 @@ describe Mince::Model do
     end
   end
 end
+
