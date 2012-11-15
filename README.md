@@ -61,7 +61,7 @@ The following pages provide a deeper look into Mince
 
 Link | Description
 ----|-----
-[API Docs](http://rdoc.info/github/coffeencoke/mince/update_to_v2/frames) | API docs for Mince
+[API Docs](http://rdoc.info/github/coffeencoke/mince/master/frames) | API docs for Mince
 [Existing Interfaces](https://github.com/coffeencoke/mince/wiki/Existing-interfaces) | List of supported database interfaces that can be used with Mince
 [Usage with Rails](https://github.com/coffeencoke/mince/wiki/Usage-with-rails) | More information on how to use Mince with Rails
 [Fancy Mixins](https://github.com/coffeencoke/mince/wiki/Fancy-mixins) | We've written a few mixins that provide some standard behavior to your models while using Mince
