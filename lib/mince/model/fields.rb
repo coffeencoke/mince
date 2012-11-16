@@ -3,11 +3,14 @@ module Mince
     require 'active_support'
     require 'active_support/core_ext/module/delegation'
     require 'active_support/core_ext/object/instance_variables'
+    require_relative 'data_model'
 
     module Fields
       extend ActiveSupport::Concern
 
       included do
+        include Mince::Model::DataModel
+
         attr_accessor :id
       end
 

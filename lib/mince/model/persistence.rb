@@ -3,33 +3,18 @@ module Mince
     require 'active_support'
     require 'active_model'
     require 'active_support/core_ext/module/delegation'
+    require_relative 'data_model'
 
     module Persistence
       extend ActiveSupport::Concern
 
       included do
+        include Mince::Model::DataModel
         include ActiveModel::Conversion
         extend ActiveModel::Naming
       end
 
       module ClassMethods
-        # Sets or returns the data model class for the model
-        def data_model(model=nil)
-          @data_model = model if model
-          @data_model
-        end
-
-        # Returns all models from the data model
-        def all
-          data_model.all.map{|a| new a }
-        end
-
-        # Returns a model that matches a given id, returns nil if none found
-        def find(id)
-          a = data_model.find(id)
-          new a if a
-        end
-
         # Creates a record with the given field values
         def create(data)
           new(data).tap(&:save)

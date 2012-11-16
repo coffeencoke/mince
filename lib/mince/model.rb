@@ -1,6 +1,8 @@
 module Mince
   require_relative 'model/fields'
   require_relative 'model/persistence'
+  require_relative 'model/finders'
+  require_relative 'model/data_model'
 
   # = Model
   #
@@ -34,8 +36,10 @@ module Mince
     extend ActiveSupport::Concern
 
     included do
+      include DataModel
       include Fields
       include Persistence
+      include Finders
     end
   end
 end
