@@ -225,8 +225,6 @@ module Mince # :nodoc:
         interface.delete_collection(data_collection)
       end
 
-      private
-
       def translate_from_interface(hash)
         if hash
           hash["id"] = hash[primary_key] if hash[primary_key]
@@ -237,6 +235,8 @@ module Mince # :nodoc:
       def translate_each_from_interface(data)
         data.collect {|d| translate_from_interface(d) }
       end
+
+      private
 
       def primary_key
         @primary_key ||= interface.primary_key
