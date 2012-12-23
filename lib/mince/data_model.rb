@@ -227,7 +227,7 @@ module Mince # :nodoc:
 
       def translate_from_interface(hash)
         if hash
-          hash["id"] = hash[primary_key] if hash[primary_key]
+          hash["id"] = hash[primary_key] if hash[primary_key] && (primary_key != :id || primary_key != 'id')
           HashWithIndifferentAccess.new hash
         end
       end
