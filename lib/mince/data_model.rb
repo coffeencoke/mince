@@ -149,7 +149,7 @@ module Mince # :nodoc:
       end
 
 
-      # Deletes a field from all records that matches the field / value key pairs in the 
+      # Deletes all records that matches the field / value key pairs in the 
       # params provided in the collection
       #
       # This will only delete records that match all key/value pairs in the params hash.
