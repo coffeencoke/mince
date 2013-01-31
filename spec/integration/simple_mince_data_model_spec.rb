@@ -46,7 +46,7 @@ describe 'A simple mince data model integration spec' do
     it 'can be persisted to the mince data interface' do
       subject.save
 
-      raw_record = Mince::Config.interface.find(:guitars, Mince::HashyDb::Interface.primary_key, subject.id)
+      raw_record = Mince::Config.interface.find(:guitars, subject.id)
       model_record = model_klass.find(subject.id)
       raw_record[:brand].should == brand
       model_record.brand.should == brand

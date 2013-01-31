@@ -112,7 +112,7 @@ describe Mince::DataModel, 'Mixin' do
     let(:data_model_id) { '1234567' }
 
     it 'replaces the data model in the db store' do
-      interface.should_receive(:push_to_array).with(collection_name, primary_key, data_model_id, :array_field, 'some value')
+      interface.should_receive(:push_to_array).with(collection_name, data_model_id, :array_field, 'some value')
 
       described_class.push_to_array(data_model_id, :array_field, 'some value')
     end
@@ -135,7 +135,7 @@ describe Mince::DataModel, 'Mixin' do
     let(:data_model_id) { '1234567' }
 
     it 'removes the value from the array' do
-      interface.should_receive(:remove_from_array).with(collection_name, primary_key, data_model_id, :array_field, 'some value')
+      interface.should_receive(:remove_from_array).with(collection_name, data_model_id, :array_field, 'some value')
 
       described_class.remove_from_array(data_model_id, :array_field, 'some value')
     end
@@ -220,7 +220,7 @@ describe Mince::DataModel, 'Mixin' do
     let(:data_model) { {primary_key => 'id', :id => 'id' } }
 
     it 'returns the data model from the data store' do
-      interface.should_receive(:find).with(collection_name, primary_key, 'id').and_return(data_model)
+      interface.should_receive(:find).with(collection_name, 'id').and_return(data_model)
 
       described_class.find(data_model[:id]).should == HashWithIndifferentAccess.new(data_model)
     end
