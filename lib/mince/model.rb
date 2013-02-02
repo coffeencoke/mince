@@ -31,7 +31,21 @@ module Mince
   #   book = Book.new title: 'The World In Photographs', publisher: 'National Geographic'
   #   book.save
   #
-  # View the docs for each method available
+  # By including this module, you are including DataModel, Fields, Persistence, and Finders.
+  #
+  # However, you can choose which modules you would like by including those modules individually 
+  # so that you can have flexibility an lighter weight help to implement your models.
+  #
+  #   class AvailableBook
+  #     include Mince::Model::DataModel
+  #
+  #     data_collection :books
+  #
+  #     def self.all
+  #       data_collection.all_by_fields(library: "St. Louis - Downtown", available: true).map{ |a| new(a) }
+  #     end
+  #   end
+  #
   module Model
     extend ActiveSupport::Concern
 
