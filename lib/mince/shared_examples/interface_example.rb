@@ -103,24 +103,19 @@ shared_examples_for 'a mince interface' do
       data2[:field_1] = 'value modified'
       interface.replace(:some_collection, data2)
 
-      convert(interface.find(:some_collection, primary_key, 2))[:field_1].should == 'value modified'
+      convert(interface.find(:some_collection, 2))[:field_1].should == 'value modified'
     end
 
     it 'can update a field with a value on a specific record' do
       interface.update_field_with_value(:some_collection, 3, :field_2, '10')
 
-      convert(interface.find(:some_collection, primary_key, 3))[:field_2].should == '10'
+      convert(interface.find(:some_collection, 3))[:field_2].should == '10'
     end
 
     it 'can increment a field with a given amount for a specific field' do
       interface.increment_field_by_amount(:some_collection, 1, :field_2, 3)
 
-      convert(interface.find(:some_collection, primary_key, 1))[:field_2].should == 6
-    end
-
-    it 'can get one document' do
-      convert(interface.find(:some_collection, :field_1, 'value 1')).should == convert(data1)
-      convert(interface.find(:some_collection, :field_2, 6)).should == convert(data2)
+      convert(interface.find(:some_collection, 1))[:field_2].should == 6
     end
 
     it 'can clear the data store' do
@@ -145,18 +140,18 @@ shared_examples_for 'a mince interface' do
     end
 
     it 'can push a value to an array for a specific record' do
-      interface.push_to_array(:some_collection, primary_key, 1, :field_3, 'add to existing array')
-      interface.push_to_array(:some_collection, primary_key, 1, :new_field, 'add to new array')
+      interface.push_to_array(:some_collection, 1, :field_3, 'add to existing array')
+      interface.push_to_array(:some_collection, 1, :new_field, 'add to new array')
 
-      record = convert(interface.find(:some_collection, primary_key, 1))
+      record = convert(interface.find(:some_collection, 1))
       record[:field_3].should include('add to existing array')
       record[:new_field].should == ['add to new array']
     end
 
     it 'can remove a value from an array for a specific record' do
-      interface.remove_from_array(:some_collection, primary_key, 1, :field_3, 2)
+      interface.remove_from_array(:some_collection, 1, :field_3, 2)
 
-      convert(interface.find(:some_collection, primary_key, 1))[:field_3].should_not include(2)
+      convert(interface.find(:some_collection, 1))[:field_3].should_not include(2)
     end
 
     it 'can get all records that match a given set of keys and values' do

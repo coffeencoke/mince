@@ -119,7 +119,7 @@ module Mince # :nodoc:
       # @param [Symbol] field the field to update
       # @param [*] value the value to update the field with
       def remove_from_array(id, field, value)
-        interface.remove_from_array(data_collection, interface.primary_key, id, field, value)
+        interface.remove_from_array(data_collection, id, field, value)
       end
 
       # Pushes a value to an array field
@@ -128,7 +128,7 @@ module Mince # :nodoc:
       # @param [Symbol] field the field to update
       # @param [*] value the value to update the field with
       def push_to_array(id, field, value)
-        interface.push_to_array(data_collection, interface.primary_key, id, field, value)
+        interface.push_to_array(data_collection, id, field, value)
       end
 
       # Returns a record that has the given id
@@ -138,7 +138,7 @@ module Mince # :nodoc:
       # @param [id] id the id of the record to find
       # @returns [HashWithIndifferentAccess, nil] a hash with the data for the record
       def find(id)
-        translate_from_interface interface.find(data_collection, interface.primary_key, id)
+        translate_from_interface interface.find(data_collection, id)
       end
 
       # Deletes a field from all records in the collection
