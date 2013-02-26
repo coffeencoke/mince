@@ -74,9 +74,6 @@ Link | Description
 
 You can contribute to Mince by doing a number of things.  View the [Development](https://github.com/coffeencoke/mince/wiki/Development) page for more details.
 
-# Owners
-
-
 # Contributors
 
 Name | Twitter | Github
@@ -86,6 +83,8 @@ Jason Mayer | [@farkerhaiku](https://twitter.com/farkerhaiku) | [@farkerhaiku](h
 Amos King | [@adkron](https://twitter.com/adkron) | [@adkron](https://github.com/adkron)
 Ionic Mobile Team | [@asynchrony](https://twitter.com/asynchrony) | [@ionicmobile](https://github.com/ionicmobile)
 David Czarnecki | [@czarneckid](https://twitter.com/czarneckid) | [@czarneckid](https://github.com/czarneckid)
+Kenny Ortmann | [@yairgo](https://twitter.com/yairgo) | [@yairgo](https://github.com/yairgo)
+Helena Converse | [@n3rdgir1](https://twitter.com/n3rdgir1) | [@n3rdgir1](https://github.com/n3rdgir1)
 
 If you've been missed on this list, let us know by creating an issue or sending one of us a message.
 
