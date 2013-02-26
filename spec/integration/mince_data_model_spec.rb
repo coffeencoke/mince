@@ -28,13 +28,15 @@ describe 'A mince data model integration spec' do
   end
 
   it 'can insert data directly to the data collection' do
-    data_model_klass.add attributes
+    result = data_model_klass.add attributes
 
     all = data_model_klass.all
     all.size.should == 1
-    %w(brand price type color).each do |field|
-      all.first[field.to_sym].should == attributes[field.to_sym]
+    [all.first, result].each do |object|
+      %w(brand price type color).each do |field|
+        object[field.to_sym].should == attributes[field.to_sym]
+      end
+      object[primary_key].should_not be_nil
     end
-    all.first[primary_key].should_not be_nil
   end
 end

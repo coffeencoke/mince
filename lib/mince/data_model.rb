@@ -232,7 +232,8 @@ module Mince # :nodoc:
 
       # Adds a new record with provided data hash
       def add(hash)
-        interface.add(data_collection, HashWithIndifferentAccess.new(hash.merge(interface.primary_key => generate_unique_id(hash))))
+        hash = HashWithIndifferentAccess.new(hash.merge(primary_key => generate_unique_id(hash)))
+        interface.add(data_collection, hash).first
       end
 
       def translate_from_interface(hash)

@@ -32,18 +32,17 @@ describe Mince::DataModel, 'Mixin' do
   end
 
   describe "inserting data" do
+    let(:expected_hash) { data_field_attributes.merge(primary_key => unique_id) }
+
     before do
-      interface.stub(:add)
+      interface.stub(:add).and_return([expected_hash])
       interface.stub(:generate_unique_id).with(data_field_attributes).and_return(unique_id)
     end
 
     it 'adds the data to the db store with the generated id' do
-      expected_hash = data_field_attributes.merge(
-        primary_key => unique_id
-      )
-      interface.should_receive(:add).with(collection_name, HashWithIndifferentAccess.new(expected_hash))
+      interface.should_receive(:add).with(collection_name, HashWithIndifferentAccess.new(expected_hash)).and_return([expected_hash])
 
-      described_class.add(data_field_attributes)
+      described_class.add(data_field_attributes).should == expected_hash
     end
   end
 
