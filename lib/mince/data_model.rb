@@ -231,6 +231,9 @@ module Mince # :nodoc:
       end
 
       # Adds a new record with provided data hash
+      #
+      # @param [Hash] data to add to the data collection
+      # @returns [Hash] the data that was added to the data collection, including the uniquely generated id
       def add(hash)
         hash = HashWithIndifferentAccess.new(hash.merge(primary_key => generate_unique_id(hash)))
         interface.add(data_collection, hash).first
