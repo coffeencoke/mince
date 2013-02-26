@@ -8,7 +8,7 @@ require_relative 'config'
 module Mince # :nodoc:
   # = DataModel
   #
-  # Mince::DataModel is used as a mixin to easily mixin behavior into an object that 
+  # Mince::DataModel is used as a mixin to easily mixin behavior into an object that
   # you wish to act as a data model and interact with mince data interfaces.
   #
   # Simply mixin this module in order to get a wrapper class to interact with a mince
@@ -103,7 +103,7 @@ module Mince # :nodoc:
 
       # Increments a field by a given amount
       #
-      # Some databases provide very efficient algorithms for incrementing or decrementing a 
+      # Some databases provide very efficient algorithms for incrementing or decrementing a
       # value.
       #
       # @param [id] id the id of the record to update
@@ -149,7 +149,7 @@ module Mince # :nodoc:
       end
 
 
-      # Deletes all records that matches the field / value key pairs in the 
+      # Deletes all records that matches the field / value key pairs in the
       # params provided in the collection
       #
       # This will only delete records that match all key/value pairs in the params hash.
@@ -225,6 +225,16 @@ module Mince # :nodoc:
         interface.delete_collection(data_collection)
       end
 
+      # Generates a new id to be used for a primary key
+      def generate_unique_id(seed)
+        interface.generate_unique_id(seed)
+      end
+
+      # Adds a new record with provided data hash
+      def add(hash)
+        interface.add(data_collection, HashWithIndifferentAccess.new(hash.merge(interface.primary_key => generate_unique_id(hash))))
+      end
+
       def translate_from_interface(hash)
         if hash
           hash["id"] = hash[primary_key] if hash[primary_key] && (primary_key != :id || primary_key != 'id')
@@ -293,7 +303,7 @@ module Mince # :nodoc:
     end
 
     def generated_id
-      interface.generate_unique_id(model)
+      self.class.generate_unique_id(model)
     end
 
     def model_has_id?

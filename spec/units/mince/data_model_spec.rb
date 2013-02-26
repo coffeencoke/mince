@@ -31,6 +31,22 @@ describe Mince::DataModel, 'Mixin' do
     Mince::Config.stub(:interface => interface)
   end
 
+  describe "inserting data" do
+    before do
+      interface.stub(:add)
+      interface.stub(:generate_unique_id).with(data_field_attributes).and_return(unique_id)
+    end
+
+    it 'adds the data to the db store with the generated id' do
+      expected_hash = data_field_attributes.merge(
+        primary_key => unique_id
+      )
+      interface.should_receive(:add).with(collection_name, HashWithIndifferentAccess.new(expected_hash))
+
+      described_class.add(data_field_attributes)
+    end
+  end
+
   describe "storing a data model" do
     let(:model) { mock 'a model', instance_values: data_field_attributes }
 
@@ -53,7 +69,7 @@ describe Mince::DataModel, 'Mixin' do
 
   it 'can delete the collection' do
     interface.should_receive(:delete_collection).with(collection_name)
-    
+
     described_class.delete_collection
   end
 
@@ -90,7 +106,7 @@ describe Mince::DataModel, 'Mixin' do
 
   describe 'updating a specific field for a data model' do
     let(:data_model_id) { '1234567' }
-    
+
     it 'has the data store update the field' do
       interface.should_receive(:update_field_with_value).with(collection_name, data_model_id, :some_field, 'some value')
 

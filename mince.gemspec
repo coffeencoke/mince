@@ -15,20 +15,29 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
 
   s.files         = %w(
-    lib/mince.rb 
-    lib/mince/version.rb 
-    lib/mince/config.rb 
+    lib/mince.rb
+    lib/mince/config.rb
     lib/mince/data_model.rb
     lib/mince/model.rb
+    lib/mince/version.rb
     lib/mince/shared_examples/interface_example.rb
+    lib/mince/model/data_model.rb
+    lib/mince/model/fields.rb
+    lib/mince/model/finders.rb
+    lib/mince/model/persistence.rb
   )
 
   s.test_files    = %w(
-    spec/units/mince/config_spec.rb 
+    spec/integration/mince_data_model_spec.rb
+    spec/integration/mince_model_spec.rb
+    spec/support/shared_examples/modeL_data_model_example.rb
+    spec/support/shared_examples/model_finders_example.rb
+    spec/units/mince/model/data_model_spec.rb
+    spec/units/mince/model/finders_spec.rb
+    spec/units/mince/config_spec.rb
     spec/units/mince/interface_example_spec.rb
     spec/units/mince/data_model_spec.rb
     spec/units/mince/model_spec.rb
-    spec/integration/simple_mince_data_model_spec.rb
   )
   s.require_paths = ["lib"]
 
