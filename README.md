@@ -1,5 +1,7 @@
 # What is Mince
 
+[![Travis CI](https://travis-ci.org/coffeencoke/mince.png)](https://travis-ci.org/#!/coffeencoke/mince)
+
 Mince is a ruby gem to provide a light weight ORM to persist data to a variety of databases in ruby apps.
 
 The motivation behind this is so your application is not tightly tied to a specific database. As your application grows you may need to upgrade to a different database or pull specific models to a different persistence strategy.
