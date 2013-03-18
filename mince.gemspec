@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '~> 3.0'
   s.add_dependency 'activemodel', '~> 3.0'
 
-  s.required_ruby_version = '~> 1.9.0'
+  s.required_ruby_version = '>= 1.9.3'
 
   s.add_development_dependency('rake', '~> 0.9')
   s.add_development_dependency('rspec', '~> 2.0')
