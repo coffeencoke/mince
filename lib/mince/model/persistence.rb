@@ -32,7 +32,7 @@ module Mince
       # Saves the object to the data model.  Stores if new, updates previous entry if it has already
       # been saved.
       def save
-        ensure_no_extra_fields if self.respond_to?(:ensure_no_extra_fields)
+        ensure_no_extra_fields if self.respond_to?(:ensure_no_extra_fields, true)
 
         if persisted?
           data_model.update(self)
