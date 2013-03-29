@@ -5,11 +5,11 @@ module Mince
     end
 
     def self.minor
-      0
+      1
     end
 
     def self.patch
-      2
+      0
     end
   end
 
