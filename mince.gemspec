@@ -8,37 +8,14 @@ Gem::Specification.new do |s|
   s.authors     = ["Matt Simpson", "Asynchrony"]
   s.email       = ["matt@railsgrammer.com"]
   s.homepage    = "https://github.com/coffeencoke/#{s.name}"
-  s.summary     = %q{Library to interact with mince interfacing data libraries}
-  s.description = %q{Library to interact with mince interfacing data libraries}
+  s.summary     = %q{Ruby library to provide a light weight flexible ORM}
+  s.description = %q{Library to interact with databases, not tied to rails, and not tied to active record pattern}
 
   s.rubyforge_project = s.name
   s.has_rdoc = true
-
-  s.files         = %w(
-    lib/mince.rb
-    lib/mince/config.rb
-    lib/mince/data_model.rb
-    lib/mince/model.rb
-    lib/mince/version.rb
-    lib/mince/shared_examples/interface_example.rb
-    lib/mince/model/data_model.rb
-    lib/mince/model/fields.rb
-    lib/mince/model/finders.rb
-    lib/mince/model/persistence.rb
-  )
-
-  s.test_files    = %w(
-    spec/integration/mince_data_model_spec.rb
-    spec/integration/mince_model_spec.rb
-    spec/support/shared_examples/modeL_data_model_example.rb
-    spec/support/shared_examples/model_finders_example.rb
-    spec/units/mince/model/data_model_spec.rb
-    spec/units/mince/model/finders_spec.rb
-    spec/units/mince/config_spec.rb
-    spec/units/mince/interface_example_spec.rb
-    spec/units/mince/data_model_spec.rb
-    spec/units/mince/model_spec.rb
-  )
+  s.files = Dir.glob("{bin,lib}/**/*") + %w(LICENSE.txt README.md)
+  s.test_files = Dir.glob('spec/**/*.rb')
+  s.license = "MIT"
   s.require_paths = ["lib"]
 
   s.add_dependency 'activesupport', '~> 3.0'
