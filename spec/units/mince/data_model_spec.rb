@@ -15,13 +15,13 @@ describe Mince::DataModel do
     end
   end
 
-  let(:collection_name) { :guitars }
+  let(:data_collection) { :guitars }
   let(:data_field_attributes) do
     {
-            brand: 'a brand everyone knows',
-            price: 'a price you save up for',
-            type: 'the kind you want',
-            color: 'should be your favorite'
+      brand: 'a brand everyone knows',
+      price: 'a price you save up for',
+      type: 'the kind you want',
+      color: 'should be your favorite'
     }
   end
   let(:model) { mock instance_values: data_field_attributes }
@@ -34,7 +34,7 @@ describe Mince::DataModel do
     Mince::Config.stub(:interface => interface)
   end
 
-  describe 'persisting itself to the data collection' do
+  describe 'creating' do
     let(:attributes_with_id) { attributes.merge(primary_key => unique_id) }
     let(:attributes) { HashWithIndifferentAccess.new data_field_attributes }
 
@@ -43,7 +43,7 @@ describe Mince::DataModel do
     end
 
     it 'adds the data model to the db store' do
-      interface.should_receive(:add).with(collection_name, attributes_with_id)
+      interface.should_receive(:add).with(data_collection, attributes_with_id)
 
       klass_object.create
     end
@@ -56,6 +56,20 @@ describe Mince::DataModel do
 
     it 'returns the id' do
       klass_object.create.should == unique_id
+    end
+  end
+
+  describe 'updating' do
+    let(:attributes) { HashWithIndifferentAccess.new data_field_attributes }
+
+    before do
+      data_field_attributes.merge!(primary_key => unique_id)
+    end
+
+    it 'replaces all data in the data collection with the current state of the model' do
+      interface.should_receive(:replace).with(data_collection, attributes)
+
+      klass_object.update
     end
   end
 end
@@ -153,17 +167,18 @@ describe Mince::DataModel, 'Class Methods' do
   end
 
   describe "updating a data model" do
-    let(:data_model_id) { '1234567' }
-    let(:model) { mock 'a model', id: data_model_id, instance_values: data_field_attributes }
+    let(:klass_object) { mock }
+    let(:model) { mock 'a model' }
+    let(:return_value) { mock }
 
     before do
-      interface.stub(:replace)
+      described_class.stub(:new).with(model).and_return(klass_object)
     end
 
-    it 'replaces the data model in the db store' do
-      interface.should_receive(:replace).with(collection_name, HashWithIndifferentAccess.new({primary_key => data_model_id}).merge(data_field_attributes))
+    it 'can update a record for a model' do
+      klass_object.should_receive(:update).and_return(return_value)
 
-      described_class.update(model)
+      described_class.update(model).should == return_value
     end
   end
 

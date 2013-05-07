@@ -87,9 +87,7 @@ module Mince # :nodoc:
       #
       # @param [Class] model a ruby class instance object to store into the data store
       def update(model)
-        new(model).tap do |p|
-          p.replace_in_interface
-        end
+        new(model).update
       end
 
       # Updates a specific field with a value for the record with the given id
@@ -283,6 +281,10 @@ module Mince # :nodoc:
       update_timestamps if timestamps?
       add_to_interface
       id
+    end
+
+    def update
+      replace_in_interface
     end
 
     def timestamps?
