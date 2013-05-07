@@ -121,6 +121,7 @@ module Mince # :nodoc:
       # @param [*] value the value to update the field with
       def remove_from_array(id, field, value)
         interface.remove_from_array(data_collection, id, field, value)
+        set_update_timestamp_for(data_collection, id) if timestamps?
       end
 
       # Pushes a value to an array field

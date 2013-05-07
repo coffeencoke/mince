@@ -96,7 +96,6 @@ module Mince::DataModel
 
         klass.update_field_with_value(id, field_to_update, new_value)
       end
-
     end
 
     describe 'incrementing a single field' do
@@ -113,9 +112,22 @@ module Mince::DataModel
 
         klass.increment_field_by_amount(id, field_to_update, amount)
       end
-
     end
 
+    describe 'removing a value from an array field' do
+      subject { klass.new(model) }
+      let(:field_to_update) { :username }
+      let(:value) { mock :value }
 
+      before do
+        interface.stub(:remove_from_array).with(data_collection, id, field_to_update, value)
+      end
+
+      it 'sets the updated value' do
+        interface.should_receive(:update_field_with_value).with(data_collection, id, :updated_at, utc_now)
+
+        klass.remove_from_array(id, field_to_update, value)
+      end
+    end
   end
 end
