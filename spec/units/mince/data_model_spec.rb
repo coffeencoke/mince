@@ -19,7 +19,8 @@ describe Mince::DataModel, 'Mixin' do
       include Mince::DataModel
 
       data_collection :guitars
-      data_fields :brand, :price, :type, :color
+      data_fields :brand, :price
+      data_fields :type, :color
     end
   end
 

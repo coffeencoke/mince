@@ -1,5 +1,6 @@
 require 'mince'
 require 'hashy_db'
+require 'active_support/core_ext/numeric/time'
 
 describe 'A mince model integration spec' do
   subject { model_klass.new attributes }

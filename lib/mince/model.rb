@@ -33,7 +33,7 @@ module Mince
   #
   # By including this module, you are including DataModel, Fields, Persistence, and Finders.
   #
-  # However, you can choose which modules you would like by including those modules individually 
+  # However, you can choose which modules you would like by including those modules individually
   # so that you can have flexibility an lighter weight help to implement your models.
   #
   #   class AvailableBook

@@ -33,6 +33,8 @@ module Mince # :nodoc:
   #
   # View the docs for each method available
   module DataModel
+    require_relative 'data_model/timestamps'
+
     extend ActiveSupport::Concern
 
     included do
@@ -261,8 +263,9 @@ module Mince # :nodoc:
       end
 
       def create_data_fields(*fields)
+        @data_fields ||= []
         attr_accessor *fields
-        @data_fields = fields
+        @data_fields += fields
       end
     end
 
