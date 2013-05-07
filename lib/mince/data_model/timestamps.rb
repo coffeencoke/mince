@@ -31,6 +31,13 @@ module Mince
       included do
         data_fields :created_at, :updated_at
       end
+
+      module ClassMethods # :nodoc:
+        def update_timestamps(hash)
+          now = Time.now.utc
+          hash.merge!(created_at: now, updated_at: now)
+        end
+      end
     end
   end
 end

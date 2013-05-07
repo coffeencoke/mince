@@ -238,7 +238,13 @@ module Mince # :nodoc:
       # @returns [Hash] the data that was added to the data collection, including the uniquely generated id
       def add(hash)
         hash = HashWithIndifferentAccess.new(hash.merge(primary_key => generate_unique_id(hash)))
+        update_timestamps(hash) if timestamps?
         interface.add(data_collection, hash).first
+      end
+
+      # Returns true if the data model uses the Timestamps mixin
+      def timestamps?
+        include? Mince::DataModel::Timestamps
       end
 
       def translate_from_interface(hash)

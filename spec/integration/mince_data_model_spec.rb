@@ -41,6 +41,8 @@ describe 'A mince data model integration spec' do
   end
 
   describe 'a mince data model with timestamps' do
+    subject { data_model_klass.new brand: mock }
+
     let(:data_model_klass) do
       Class.new do
         include Mince::DataModel
@@ -51,23 +53,28 @@ describe 'A mince data model integration spec' do
       end
     end
 
-    context 'when the record is created' do
-      subject { data_model_klass.new brand: mock }
+    it 'provides a data field for the timestamps' do
+      subject.created_at.should be_nil
+      subject.updated_at.should be_nil
+      subject.data_fields.should =~ [:brand, :updated_at, :created_at]
+    end
 
-      it 'provides a data field for the timestamps' do
-        subject.created_at.should be_nil
-        subject.updated_at.should be_nil
-        subject.data_fields.should =~ [:brand, :updated_at, :created_at]
+    context 'when the record is created' do
+      let(:persisted_data_model) { data_model_klass.find_by_field :brand, brand }
+      let(:brand) { 'Gibson' }
+
+      before do
+        data_model_klass.add brand: brand
       end
 
       it 'sets the created at timestamp' do
-        pending
-        (subject.created_at > 10.seconds.ago.utc && subject.created_at < 10.seconds.from_now.utc).should be_true
+        persisted_data_model[:created_at].should_not be_nil
+        (persisted_data_model[:created_at] > 10.seconds.ago.utc && persisted_data_model[:created_at] < 10.seconds.from_now.utc).should be_true
       end
 
       it 'sets the updated at timestamp' do
         pending
-        (subject.updated_at > 10.seconds.ago.utc && subject.updated_at < 10.seconds.from_now.utc).should be_true
+        (persisted_data_model[:updated_at] > 10.seconds.ago.utc && persisted_data_model[:updated_at] < 10.seconds.from_now.utc).should be_true
       end
     end
 
