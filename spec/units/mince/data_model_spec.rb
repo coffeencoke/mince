@@ -1,7 +1,66 @@
 require_relative '../../../lib/mince/data_model'
 require 'digest'
 
-describe Mince::DataModel, 'Mixin' do
+describe Mince::DataModel do
+  let(:klass_object){ described_class.new(model) }
+
+  let(:described_class) { klass }
+  let(:klass) do
+    Class.new do
+      include Mince::DataModel
+
+      data_collection :guitars
+      data_fields :brand, :price
+      data_fields :type, :color
+    end
+  end
+
+  let(:collection_name) { :guitars }
+  let(:data_field_attributes) do
+    {
+            brand: 'a brand everyone knows',
+            price: 'a price you save up for',
+            type: 'the kind you want',
+            color: 'should be your favorite'
+    }
+  end
+  let(:model) { mock instance_values: data_field_attributes }
+
+  let(:interface) { mock 'mince data interface class', generate_unique_id: unique_id, primary_key: primary_key }
+  let(:unique_id) { mock 'id' }
+  let(:primary_key) { "custom_id" }
+
+  before do
+    Mince::Config.stub(:interface => interface)
+  end
+
+  describe 'persisting itself to the data collection' do
+    let(:attributes_with_id) { attributes.merge(primary_key => unique_id) }
+    let(:attributes) { HashWithIndifferentAccess.new data_field_attributes }
+
+    before do
+      interface.stub(:add)
+    end
+
+    it 'adds the data model to the db store' do
+      interface.should_receive(:add).with(collection_name, attributes_with_id)
+
+      klass_object.create
+    end
+
+    it 'generates a unique id' do
+      interface.should_receive(:generate_unique_id).with(model).and_return(unique_id)
+
+      klass_object.create
+    end
+
+    it 'returns the id' do
+      klass_object.create.should == unique_id
+    end
+  end
+end
+
+describe Mince::DataModel, 'Class Methods' do
   let(:described_class) { klass }
 
   let(:collection_name) { :guitars }
@@ -53,29 +112,21 @@ describe Mince::DataModel, 'Mixin' do
     it 'adds the data to the db store with the generated id' do
       described_class.add(data_field_attributes).should == expected_hash
     end
-
-    context 'when timestamps are included' do
-
-    end
   end
 
   describe "storing a data model" do
-    let(:model) { mock 'a model', instance_values: data_field_attributes }
+    let(:klass_object) { mock }
+    let(:model) { mock 'a model' }
+    let(:return_value) { mock }
 
     before do
-      interface.stub(:add)
+      described_class.stub(:new).with(model).and_return(klass_object)
     end
 
-    it 'generates a unique id using the model as a salt' do
-      interface.should_receive(:generate_unique_id).with(model).and_return(unique_id)
+    it 'can create a record from a model' do
+      klass_object.should_receive(:create).and_return(return_value)
 
-      described_class.store(model)
-    end
-
-    it 'adds the data model to the db store' do
-      interface.should_receive(:add).with(collection_name, HashWithIndifferentAccess.new({primary_key => unique_id}).merge(data_field_attributes))
-
-      described_class.store(model)
+      described_class.store(model).should == return_value
     end
   end
 
@@ -254,3 +305,5 @@ describe Mince::DataModel, 'Mixin' do
     end
   end
 end
+
+

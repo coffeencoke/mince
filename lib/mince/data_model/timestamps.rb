@@ -36,10 +36,20 @@ module Mince
       end
 
       module ClassMethods # :nodoc:
-        def update_timestamps(hash)
+        def add_timestamps_to_hash(hash)
           now = Time.now.utc
           hash.merge!(created_at: now, updated_at: now)
         end
+      end
+
+      def update_timestamps
+        now = Time.now.utc
+        self.created_at = now
+        self.updated_at = now
+      end
+
+      def timestamp_attributes
+        { created_at: created_at, updated_at: updated_at }
       end
     end
   end

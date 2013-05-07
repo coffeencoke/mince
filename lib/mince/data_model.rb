@@ -78,9 +78,7 @@ module Mince # :nodoc:
       # @param [Class] model a ruby class instance object to store into the data store
       # @returns [id] returns the id of the newly stored object
       def store(model)
-        new(model).tap do |p|
-          p.add_to_interface
-        end.id
+        new(model).create
       end
 
       # Updates the given model in the data store with the fields and values in model
@@ -238,7 +236,7 @@ module Mince # :nodoc:
       # @returns [Hash] the data that was added to the data collection, including the uniquely generated id
       def add(hash)
         hash = HashWithIndifferentAccess.new(hash.merge(primary_key => generate_unique_id(hash)))
-        update_timestamps(hash) if timestamps?
+        add_timestamps_to_hash(hash) if timestamps?
         interface.add(data_collection, hash).first
       end
 
@@ -258,11 +256,11 @@ module Mince # :nodoc:
         data.collect {|d| translate_from_interface(d) }
       end
 
-      private
-
       def primary_key
         @primary_key ||= interface.primary_key
       end
+
+      private
 
       def set_data_collection(collection_name)
         @data_collection = collection_name
@@ -279,6 +277,16 @@ module Mince # :nodoc:
       @model = model
       set_data_field_values
       set_id
+    end
+
+    def create
+      update_timestamps if timestamps?
+      add_to_interface
+      id
+    end
+
+    def timestamps?
+      self.class.timestamps?
     end
 
     def interface
@@ -301,11 +309,13 @@ module Mince # :nodoc:
       interface.replace(data_collection, attributes)
     end
 
-    private
-
     def attributes
-      model_instance_values.merge(primary_key => id)
+      model_instance_values.merge(primary_key => id).tap do |hash|
+        hash.merge!(timestamp_attributes) if timestamps?
+      end
     end
+
+    private
 
     def model_instance_values
       HashWithIndifferentAccess.new(model.instance_values).slice(*data_fields)
@@ -328,7 +338,7 @@ module Mince # :nodoc:
     end
 
     def primary_key
-      interface.primary_key
+      self.class.primary_key
     end
 
     def set_data_field_value(field)
