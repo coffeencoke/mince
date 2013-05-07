@@ -131,6 +131,7 @@ module Mince # :nodoc:
       # @param [*] value the value to update the field with
       def push_to_array(id, field, value)
         interface.push_to_array(data_collection, id, field, value)
+        set_update_timestamp_for(data_collection, id) if timestamps?
       end
 
       # Returns a record that has the given id

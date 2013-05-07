@@ -114,6 +114,22 @@ module Mince::DataModel
       end
     end
 
+    describe 'adding a value to an array field' do
+      subject { klass.new(model) }
+      let(:field_to_update) { :username }
+      let(:value) { mock :value }
+
+      before do
+        interface.stub(:push_to_array).with(data_collection, id, field_to_update, value)
+      end
+
+      it 'sets the updated value' do
+        interface.should_receive(:update_field_with_value).with(data_collection, id, :updated_at, utc_now)
+
+        klass.push_to_array(id, field_to_update, value)
+      end
+    end
+
     describe 'removing a value from an array field' do
       subject { klass.new(model) }
       let(:field_to_update) { :username }
