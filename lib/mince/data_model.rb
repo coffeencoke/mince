@@ -111,6 +111,7 @@ module Mince # :nodoc:
       # @param [Numeric] amount the amount to increment or decrement the field with
       def increment_field_by_amount(id, field, amount)
         interface.increment_field_by_amount(data_collection, id, field, amount)
+        set_update_timestamp_for(data_collection, id) if timestamps?
       end
 
       # Removes a value from an field that is an array

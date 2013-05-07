@@ -8,7 +8,7 @@ module Mince::DataModel
         include Timestamps
 
         data_collection :users
-        data_fields :username, :emails, :counter
+        data_fields :username, :emails
       end
     end
     let(:utc_now) { mock 'now' }
@@ -98,5 +98,24 @@ module Mince::DataModel
       end
 
     end
+
+    describe 'incrementing a single field' do
+      subject { klass.new(model) }
+      let(:field_to_update) { :username }
+      let(:amount) { mock :amount }
+
+      before do
+        interface.stub(:increment_field_by_amount).with(data_collection, id, field_to_update, amount)
+      end
+
+      it 'sets the updated value' do
+        interface.should_receive(:update_field_with_value).with(data_collection, id, :updated_at, utc_now)
+
+        klass.increment_field_by_amount(id, field_to_update, amount)
+      end
+
+    end
+
+
   end
 end
