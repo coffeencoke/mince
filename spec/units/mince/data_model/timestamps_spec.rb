@@ -11,11 +11,11 @@ module Mince::DataModel
         data_fields :username, :emails
       end
     end
-    let(:utc_now) { mock }
+    let(:utc_now) { mock 'now' }
     let(:interface) { mock 'interface' }
     let(:data_collection) { mock 'collection name' }
     let(:id) { '1' }
-    let(:primary_key) { mock 'primary key' }
+    let(:primary_key) { :id }
 
     before do
       Time.stub_chain('now.utc' => utc_now)
@@ -49,7 +49,7 @@ module Mince::DataModel
     end
 
     describe 'adding a record from a model' do
-      let(:subject) { klass.new(model) }
+      subject { klass.new(model) }
       let(:model) { mock 'model', instance_values: instance_values }
       let(:instance_values) { HashWithIndifferentAccess.new username: "joe", emails: ["joedawg@test.com"] }
       let(:attributes_plus_timestamps) { instance_values.merge(created_at: utc_now, updated_at: utc_now, primary_key => id) }
@@ -62,6 +62,23 @@ module Mince::DataModel
         subject.create
 
         subject.attributes.should == attributes_plus_timestamps
+      end
+    end
+
+    describe 'updating a record' do
+      subject { klass.new(model) }
+      let(:model) { mock 'model', instance_values.merge(instance_values: instance_values) }
+      let(:instance_values) { HashWithIndifferentAccess.new username: "joe", emails: ["joedawg@test.com"], updated_at: 'old value', created_at: 'created time', primary_key => id }
+      let(:attributes_plus_timestamp) { instance_values.merge(updated_at: utc_now) }
+
+      before do
+        interface.stub(:replace)
+      end
+
+      it 'sets the created value' do
+        subject.update
+
+        subject.attributes.should == attributes_plus_timestamp
       end
     end
   end

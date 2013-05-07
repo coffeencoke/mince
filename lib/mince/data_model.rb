@@ -1,3 +1,4 @@
+require 'debugger'
 require 'active_support/hash_with_indifferent_access'
 require 'active_support/core_ext/object/instance_variables'
 require 'active_support/core_ext/hash/slice'
@@ -284,6 +285,7 @@ module Mince # :nodoc:
     end
 
     def update
+      update_timestamps if timestamps?
       replace_in_interface
     end
 

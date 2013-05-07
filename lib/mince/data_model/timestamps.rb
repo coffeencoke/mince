@@ -44,7 +44,7 @@ module Mince
 
       def update_timestamps
         now = Time.now.utc
-        self.created_at = now
+        self.created_at = now unless created_at
         self.updated_at = now
       end
 
