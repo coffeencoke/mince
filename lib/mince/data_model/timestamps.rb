@@ -1,5 +1,8 @@
 module Mince
   module DataModel
+    require 'active_support/concern'
+    require_relative '../data_model'
+
     # = Timestamps
     #
     # Timestamps can be mixed into your DataModel classes in order to provide with fields

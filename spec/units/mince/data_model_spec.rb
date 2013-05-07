@@ -55,18 +55,7 @@ describe Mince::DataModel, 'Mixin' do
     end
 
     context 'when timestamps are included' do
-      let(:utc_now) { mock }
 
-      before do
-        klass.send(:include, Mince::DataModel::Timestamps)
-        Time.stub_chain('now.utc' => utc_now)
-      end
-
-      it 'sets the created at value' do
-        expected_hash.merge! created_at: utc_now, updated_at: utc_now
-
-        described_class.add(data_field_attributes).should == expected_hash
-      end
     end
   end
 
