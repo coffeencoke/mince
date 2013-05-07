@@ -40,6 +40,10 @@ module Mince
           now = Time.now.utc
           hash.merge!(created_at: now, updated_at: now)
         end
+
+        def set_update_timestamp_for(data_collection, id)
+          interface.update_field_with_value(data_collection, id, :updated_at, Time.now.utc)
+        end
       end
 
       def update_timestamps

@@ -8,7 +8,7 @@ module Mince::DataModel
         include Timestamps
 
         data_collection :users
-        data_fields :username, :emails
+        data_fields :username, :emails, :counter
       end
     end
     let(:utc_now) { mock 'now' }
@@ -75,11 +75,28 @@ module Mince::DataModel
         interface.stub(:replace)
       end
 
-      it 'sets the created value' do
+      it 'sets the updated value' do
         subject.update
 
         subject.attributes.should == attributes_plus_timestamp
       end
+    end
+
+    describe 'updating a single field' do
+      subject { klass.new(model) }
+      let(:field_to_update) { :username }
+      let(:new_value) { mock 'new value' }
+
+      before do
+        interface.stub(:update_field_with_value).with(data_collection, id, field_to_update, new_value)
+      end
+
+      it 'sets the updated value' do
+        interface.should_receive(:update_field_with_value).with(data_collection, id, :updated_at, utc_now)
+
+        klass.update_field_with_value(id, field_to_update, new_value)
+      end
+
     end
   end
 end

@@ -98,6 +98,7 @@ module Mince # :nodoc:
       # @param [*] value the value to update the field with
       def update_field_with_value(id, field, value)
         interface.update_field_with_value(data_collection, id, field, value)
+        set_update_timestamp_for(data_collection, id) if timestamps?
       end
 
       # Increments a field by a given amount
