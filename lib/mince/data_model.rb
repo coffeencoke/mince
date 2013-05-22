@@ -50,6 +50,10 @@ module Mince # :nodoc:
         Config.interface
       end
 
+      def infer_fields_from_model
+        raise 'not implemented'
+      end
+
       # Sets what data fields to accept
       # Returns the fields
       #
