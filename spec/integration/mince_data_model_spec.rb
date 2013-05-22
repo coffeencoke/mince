@@ -68,18 +68,27 @@ describe 'A mince data model integration spec' do
       end
 
       it 'sets the created at timestamp' do
-        persisted_data_model[:created_at].should_not be_nil
         (persisted_data_model[:created_at] > 10.seconds.ago.utc && persisted_data_model[:created_at] < 10.seconds.from_now.utc).should be_true
       end
 
       it 'sets the updated at timestamp' do
-        pending
         (persisted_data_model[:updated_at] > 10.seconds.ago.utc && persisted_data_model[:updated_at] < 10.seconds.from_now.utc).should be_true
       end
     end
 
     context 'when the record is updated' do
-      it 'updates the updated at timestamp'
+      let(:persisted_data_model) { data_model_klass.find_by_field :brand, brand }
+      let(:brand) { 'Gibson' }
+
+      before do
+        data_model_klass.add brand: brand
+        data_model_klass.update_field_with_value persisted_data_model[:id], :updated_at, (Time.now - 10000).utc
+      end
+
+      it 'updates the updated at timestamp' do
+        persisted_data_model = data_model_klass.find_by_field(:brand, brand)
+        (persisted_data_model[:updated_at] > 10.seconds.ago.utc && persisted_data_model[:updated_at] < 10.seconds.from_now.utc).should be_true
+      end
     end
   end
 end
