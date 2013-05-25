@@ -65,10 +65,11 @@ Link | Description
 ----|-----
 [API Docs](http://rdoc.info/github/coffeencoke/mince/master/frames) | API docs for Mince
 [Existing Interfaces](https://github.com/coffeencoke/mince/wiki/Existing-interfaces) | List of supported database interfaces that can be used with Mince
+[Mince Migrator](http://coffeencoke.github.io/mince_migrator) | Database migrations library for Mince
 [Usage with Rails](https://github.com/coffeencoke/mince/wiki/Usage-with-rails) | More information on how to use Mince with Rails
 [Fancy Mixins](https://github.com/coffeencoke/mince/wiki/Fancy-mixins) | We've written a few mixins that provide some standard behavior to your models while using Mince
 [Development](https://github.com/coffeencoke/mince/wiki/Development) | Help by contributing
-[Mailing List](https://groups.google.com/forum/?fromgroups#!forum/mince_dev)
+[Mailing List](https://groups.google.com/forum/?fromgroups#!forum/mince_dev) | Mailing list for Mince
 [Travis CI](https://travis-ci.org/#!/coffeencoke/mince) | Check out the build status of Mince
 [Why Multitier Architecture?](https://github.com/coffeencoke/mince/wiki/Why-multitier-architecture%3F) | Discussion about why to use multi tier architecture as apposed to others, such as Active Record
 
@@ -89,6 +90,12 @@ Kenny Ortmann | [@yairgo](https://twitter.com/yairgo) | [@yairgo](https://github
 Helena Converse | [@n3rdgir1](https://twitter.com/n3rdgir1) | [@n3rdgir1](https://github.com/n3rdgir1)
 
 If you've been missed on this list, let us know by creating an issue or sending one of us a message.
+
+# License
+
+Copyright 2013 Matt Simpson
+
+MIT - view LICENSE.txt in the source for details
 
 # Version 1
 
