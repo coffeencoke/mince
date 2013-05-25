@@ -12,7 +12,7 @@
   <script type="text/javascript" src="javascripts/script.js"></script>
 
   <title>Mince</title>
-  <meta name="description" content="Lightweight database ORM for Ruby - Supports multiple databases">
+  <meta name="description" content="Lightweight database ORM for Ruby">
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -25,7 +25,7 @@
       <h1 class="title">Mince</h1>
     </header>
     <div id="container">
-      <p class="tagline">Lightweight database ORM for Ruby - Supports multiple databases</p>
+      <p class="tagline">Lightweight database ORM for Ruby</p>
       <div id="main" role="main">
         <div class="download-bar">
         <div class="inner">
@@ -36,146 +36,36 @@
         <span class="blc"></span><span class="trc"></span>
         </div>
         <article class="markdown-body">
-          <h1>What is Mince</h1>
+          <h2>1. Install</h2>
 
-<p>Mince is a ruby gem to provide a light weight ORM to persist data to a variety of databases in ruby apps.</p>
+<pre><code>$ gem install mince
 
-<p>The motivation behind this is so your application is not tightly tied to a specific database. As your application grows you may need to upgrade to a different database or pull specific models to a different persistence strategy.</p>
+# Install one of the mince compatible database interfaces
+$ gem install hashy_db
+</code></pre>
 
-<p>Other ORMs are married to the <a href="http://en.wikipedia.org/wiki/Active_record_pattern">Active Record Architecture Pattern</a>.  Although Mince can be used with the Active Record pattern as well, it is designed to be used in more of a <a href="http://en.wikipedia.org/wiki/Multitier_architecture">Multitier Architecture Pattern</a>, where the data layer is separated from the business logic layer in the application.  </p>
+<h2>2. Use</h2>
 
-<p><em>View the <a href="https://github.com/coffeencoke/mince/wiki/Why-multitier-architecture%3F">Why Multitier Architecture?</a> page for more discussion</em></p>
+<div class="highlight"><pre><span class="c1"># Tell Mince what database interface to use</span>
+<span class="ss">Mince</span><span class="p">:</span><span class="ss">:Config</span><span class="o">.</span><span class="n">interface</span> <span class="o">=</span> <span class="ss">Mince</span><span class="p">:</span><span class="ss">:HashyDb</span><span class="o">::</span><span class="no">Interface</span>
 
-<h2>Language Dependency</h2>
-
-<p><strong>Currently only compatible with Ruby 1.9+.  Support for Ruby 1.8 to come later.</strong></p>
-
-<h1>How to use it</h1>
-
-<p>This library contains the core components to use Mince <a href="https://github.com/coffeencoke/mince/wiki/Existing-interfaces">supported database interfaces</a>. These interfaces can be interchanged, but in this setup example we will be using <a href="https://github.com/coffeencoke/hashy_db">HashyDb</a>, which is an in-memory ruby hash database.</p>
-
-<h2>Install</h2>
-
-<p>Install <code>mince</code> and <code>hashy_db</code> gems:</p>
-
-<div class="highlight"><pre>gem install mince hashy_db
-</pre></div>
-
-<h2>Config</h2>
-
-<p>Use the config class to configure which mince database interface you
-desire to use:</p>
-
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'mince'</span>
-<span class="nb">require</span> <span class="s1">'hashy_db'</span>
-
-<span class="no">Mince</span><span class="o">::</span><span class="no">Config</span><span class="o">.</span><span class="n">interface</span> <span class="o">=</span> <span class="no">Mince</span><span class="o">::</span><span class="no">HashyDb</span><span class="o">::</span><span class="no">Interface</span>
-</pre></div>
-
-<h2>Use it</h2>
-
-<div class="highlight"><pre><span class="c1"># Get the interface</span>
-<span class="n">interface</span> <span class="o">=</span> <span class="no">Mince</span><span class="o">::</span><span class="no">Config</span><span class="o">.</span><span class="n">interface</span>
-
-<span class="c1"># Add a book</span>
-<span class="n">interface</span><span class="o">.</span><span class="n">add</span> <span class="s1">'books'</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="s1">'The World In Photographs'</span><span class="p">,</span> <span class="n">publisher</span><span class="p">:</span> <span class="s1">'National Geographic'</span>
-
-<span class="c1"># Get all books</span>
+<span class="n">interface</span> <span class="o">=</span> <span class="ss">Mince</span><span class="p">:</span><span class="ss">:Config</span><span class="o">.</span><span class="n">interface</span>
+<span class="n">interface</span><span class="o">.</span><span class="n">add</span> <span class="s1">'books'</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">'The World In Photographs'</span><span class="p">,</span> <span class="ss">publisher</span><span class="p">:</span> <span class="s1">'National Geographic'</span>
+<span class="n">interface</span><span class="o">.</span><span class="n">add</span> <span class="s1">'books'</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">'The Flinch'</span><span class="p">,</span> <span class="ss">publisher</span><span class="p">:</span> <span class="s1">'Julien Smith'</span>
 <span class="n">interface</span><span class="o">.</span><span class="n">find_all</span> <span class="s1">'books'</span>
-
-<span class="c1"># Replace a book where the record's id is 1</span>
-<span class="c1"># Use the interface's primary_key field because</span>
-<span class="c1"># some databases use non `id` fields for the primary key</span>
-<span class="n">primary_key</span> <span class="o">=</span> <span class="n">interface</span><span class="o">.</span><span class="n">primary_key</span>
-<span class="n">interface</span><span class="o">.</span><span class="n">replace</span> <span class="s1">'books'</span><span class="p">,</span> <span class="n">primary_key</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="s1">'A World In Photographs'</span><span class="p">,</span> <span class="n">publisher</span><span class="p">:</span> <span class="s1">'National Geographic'</span>
 </pre></div>
 
-<h1>Deeper Look</h1>
+<h2>License</h2>
 
-<p>The following pages provide a deeper look into Mince</p>
+<p>Copyright (c) 2013 Matt Simpson</p>
 
-<table>
-<tr>
-<th>Link</th>
-<th>Description</th>
-</tr>
-<tr>
-<td><a href="http://rdoc.info/github/coffeencoke/mince/master/frames">API Docs</a></td>
-<td>API docs for Mince</td>
-</tr>
-<tr>
-<td><a href="https://github.com/coffeencoke/mince/wiki/Existing-interfaces">Existing Interfaces</a></td>
-<td>List of supported database interfaces that can be used with Mince</td>
-</tr>
-<tr>
-<td><a href="https://github.com/coffeencoke/mince/wiki/Usage-with-rails">Usage with Rails</a></td>
-<td>More information on how to use Mince with Rails</td>
-</tr>
-<tr>
-<td><a href="https://github.com/coffeencoke/mince/wiki/Fancy-mixins">Fancy Mixins</a></td>
-<td>We've written a few mixins that provide some standard behavior to your models while using Mince</td>
-</tr>
-<tr>
-<td><a href="https://github.com/coffeencoke/mince/wiki/Development">Development</a></td>
-<td>Help by contributing</td>
-</tr>
-</table><p><a href="https://groups.google.com/forum/?fromgroups#!forum/mince_dev">Mailing List</a>
-<a href="https://travis-ci.org/#!/coffeencoke/mince">Travis CI</a> | Check out the build status of Mince
-<a href="https://github.com/coffeencoke/mince/wiki/Why-multitier-architecture%3F">Why Multitier Architecture?</a> | Discussion about why to use multi tier architecture as apposed to others, such as Active Record</p>
+<p>MIT License</p>
 
-<h1>Contribute</h1>
+<p>View the LICENSE.txt file included in the source</p>
 
-<p>You can contribute to Mince by doing a number of things.  View the <a href="https://github.com/coffeencoke/mince/wiki/Development">Development</a> page for more details.</p>
+<h2>Build status</h2>
 
-<h1>Contributors</h1>
-
-<table>
-<tr>
-<th>Name</th>
-<th>Twitter</th>
-<th>Github</th>
-</tr>
-<tr>
-<td>
-<strong>Matt Simpson</strong> (owner &amp; maintainer)</td>
-<td><a href="https://twitter.com/railsgrammer">@railsgrammer</a></td>
-<td><a href="https://github.com/coffeencoke/">@coffeencoke</a></td>
-</tr>
-<tr>
-<td>Jason Mayer</td>
-<td><a href="https://twitter.com/farkerhaiku">@farkerhaiku</a></td>
-<td><a href="https://github.com/farkerhaiku">@farkerhaiku</a></td>
-</tr>
-<tr>
-<td>Amos King</td>
-<td><a href="https://twitter.com/adkron">@adkron</a></td>
-<td><a href="https://github.com/adkron">@adkron</a></td>
-</tr>
-<tr>
-<td>Ionic Mobile Team</td>
-<td><a href="https://twitter.com/asynchrony">@asynchrony</a></td>
-<td><a href="https://github.com/ionicmobile">@ionicmobile</a></td>
-</tr>
-<tr>
-<td>David Czarnecki</td>
-<td><a href="https://twitter.com/czarneckid">@czarneckid</a></td>
-<td><a href="https://github.com/czarneckid">@czarneckid</a></td>
-</tr>
-<tr>
-<td>Kenny Ortmann</td>
-<td><a href="https://twitter.com/yairgo">@yairgo</a></td>
-<td><a href="https://github.com/yairgo">@yairgo</a></td>
-</tr>
-<tr>
-<td>Helena Converse</td>
-<td><a href="https://twitter.com/n3rdgir1">@n3rdgir1</a></td>
-<td><a href="https://github.com/n3rdgir1">@n3rdgir1</a></td>
-</tr>
-</table><p>If you've been missed on this list, let us know by creating an issue or sending one of us a message.</p>
-
-<h1>Version 1</h1>
-
-<p>Looking for support for Version 1? Put an issue in, or send one of us a message.</p>
+<p><a href="https://travis-ci.org/#!/coffeencoke/mince_migrator"><img src="https://travis-ci.org/coffeencoke/mince_migrator.png" alt="Travis CI"></a></p>
         </article>
       </div>
     </div>
@@ -196,6 +86,16 @@ desire to use:</p>
     <p class="name"></p>
   </div>
 
-  
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-41140081-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 </body>
 </html>
