@@ -16,6 +16,10 @@ module Mince
           raise 'not implemented'
         end
 
+        def find_or_initialize_by(hash)
+          find_by_fields(hash) || new(hash)
+        end
+
         # Returns all models from the data model
         def all
           data_model.all.map{|a| new a }

@@ -25,6 +25,37 @@ shared_examples_for 'a model using mince model finders' do
     end
   end
 
+  describe 'finding or initializing by fields' do
+    subject { klass.find_or_initialize_by(hash) }
+
+    let(:hash) { mock }
+
+    before do
+      klass.stub(:find_by_fields).with(hash).and_return(model)
+    end
+
+    context 'when a record exists' do
+      let(:model) { mock }
+
+      it 'returns the model' do
+        subject.should == model
+      end
+    end
+
+    context 'when a record does not exist' do
+      let(:model) { nil }
+      let(:new_model) { mock }
+
+      before do
+        klass.stub(:new).with(hash).and_return(new_model)
+      end
+
+      it 'returns a new model for the hash' do
+        subject.should == new_model
+      end
+    end
+  end
+
   describe 'finding a model by id' do
     subject { klass.find(id) }
 
