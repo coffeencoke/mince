@@ -1,46 +1,79 @@
 require_relative '../../../../lib/mince/data_model'
 
-module Mince
-  describe DataModel, 'Mixin' do
+module Mince  
+  describe DataModel do
+    subject { klass.new(model) }
+
+    let(:model) { mock fields: fields}
+    let(:fields) { [:username, :email] }
     let(:klass) do
       Class.new do
         include Mince::DataModel
 
         data_collection :users
-        infer_fields_from_model
       end
     end
-    let(:utc_now) { mock 'now' }
-    let(:interface) { mock 'interface' }
-    let(:data_collection) { mock 'collection name' }
-    let(:id) { '1' }
-    let(:primary_key) { :id }
+    let(:id) { mock }
 
     before do
-      Time.stub_chain('now.utc' => utc_now)
-      klass.stub(
-        interface: interface,
-        data_collection: data_collection,
-        primary_key: primary_key,
-        generate_unique_id: id
-      ) # because it's mixed in
+      klass.stub(:generate_unique_id).with(model).and_return(id)
     end
 
-    describe 'adding a record from a model' do
-      subject { klass.new(model) }
-      let(:model) { mock 'model', instance_values: instance_values, fields: fields }
-      let(:fields) { [:username, :emails] }
-      let(:instance_values) { HashWithIndifferentAccess.new username: "joe", emails: ["joedawg@test.com"] }
+    context 'when the data model is infering fields' do
+      let(:primary_key) { mock }
+      let(:interface) { mock }
+      let(:model_instance_values) { { username: 'coffeencoke' } }
 
       before do
-        interface.stub(:add)
+        klass.stub(infer_fields?: true, interface: interface, primary_key: primary_key)
+        model.stub(instance_values: model_instance_values)
       end
 
-      it 'sets the created value' do
-        subject.create
+      its(:infer_fields?) { should be_true }
 
-        subject.attributes.should == instance_values
+      it 'can store the model' do
+        expected_attributes = HashWithIndifferentAccess.new(model_instance_values.merge(primary_key => id))
+        interface.should_receive(:add).with(klass.data_collection, expected_attributes)
+
+        subject.create.should == id
       end
+    end
+
+    context 'when the data model is not infering fields' do
+      before do
+        klass.stub(infer_fields?: false)
+      end
+
+      its(:infer_fields?) { should be_false }
+    end
+  end
+
+  describe DataModel, 'Class Methods:' do
+    subject { klass }
+
+    context 'when the data model is infering fields' do
+      let(:klass) do
+        Class.new do
+          include Mince::DataModel
+
+          data_collection :users
+          infer_fields_from_model
+        end
+      end
+
+      its(:infer_fields?) { should be_true }
+    end
+
+    context 'when the data model is not infering fields' do
+      let(:klass) do
+        Class.new do
+          include Mince::DataModel
+
+          data_collection :users
+        end
+      end
+
+      its(:infer_fields?) { should be_false }
     end
   end
 end

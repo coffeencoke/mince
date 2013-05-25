@@ -50,8 +50,14 @@ module Mince # :nodoc:
         Config.interface
       end
 
+      # Allows models to define fields without the data model needing to define them also
       def infer_fields_from_model
-        raise 'not implemented'
+        @infer_fields_from_model = true
+      end
+
+      # Returns true if the data model is infering fields from the model
+      def infer_fields?
+        !!@infer_fields_from_model
       end
 
       # Sets what data fields to accept
@@ -63,6 +69,7 @@ module Mince # :nodoc:
       # @param [*Array] *fields an array of fields to add to the data model
       # @returns [Array] the fields defined for the data model
       def data_fields(*fields)
+        @data_fields ||= []
         create_data_fields(*fields) if fields.any?
         @data_fields
       end
@@ -273,7 +280,6 @@ module Mince # :nodoc:
       end
 
       def create_data_fields(*fields)
-        @data_fields ||= []
         attr_accessor *fields
         @data_fields += fields
       end
@@ -305,7 +311,14 @@ module Mince # :nodoc:
     end
 
     def data_fields
+      if infer_fields?
+        self.class.data_fields *model.fields
+      end
       self.class.data_fields
+    end
+
+    def infer_fields?
+      self.class.infer_fields?
     end
 
     def data_collection

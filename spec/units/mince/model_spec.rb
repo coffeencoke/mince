@@ -1,99 +1,141 @@
 require_relative '../../../lib/mince/model'
 
-describe Mince::Model do
-  let(:klass) do
-    Class.new do
-      include Mince::Model
+module Mince
+  describe Model do
+    let(:klass) do
+      Class.new do
+        include Mince::Model
 
-      data_model Class.new
+        data_model Class.new
 
-      field :meh
-      field :foo, assignable: true
-      field :bar, assignable: false
-      fields :baz, :qaaz
+        field :meh
+        field :foo, assignable: true
+        field :bar, assignable: false
+        fields :baz, :qaaz
+      end
     end
-  end
 
-  let(:meh) { mock 'meh' }
-  let(:foo) { mock 'foo' }
-  let(:bar) { mock 'bar' }
-  let(:baz) { mock 'baz' }
-  let(:qaaz) { mock 'qaaz' }
+    let(:meh) { mock 'meh' }
+    let(:foo) { mock 'foo' }
+    let(:bar) { mock 'bar' }
+    let(:baz) { mock 'baz' }
+    let(:qaaz) { mock 'qaaz' }
 
-  subject { klass.new(meh: meh, foo: foo, bar: bar, baz: baz, qaaz: qaaz) }
-
-  it 'initializes the object and assigns values to the fields' do
-    subject.meh.should == meh
-    subject.foo.should == foo
-    subject.bar.should == bar
-    subject.baz.should == baz
-    subject.qaaz.should == qaaz
-  end
-
-  it 'can set the assignable fields outside of the initilizer' do
-    subject.foo = 'foo1'
-    subject.foo.should == 'foo1'
-    subject.attributes = { foo: 'foo2' }
-    subject.foo.should == 'foo2'
-  end
-
-  it 'cannot set the readonly field outside of the initilizer' do
-    subject.attributes = { bar: 'bar1' }
-    subject.bar.should == bar
-  end
-
-  it 'fields are readonly by default' do
-    subject.attributes = { meh: 'meh1' }
-    subject.meh.should == meh
-  end
-
-  describe 'saving' do
-    let(:id) { mock 'id' }
-    let(:data_fields) { subject.fields }
+    subject { klass.new(meh: meh, foo: foo, bar: bar, baz: baz, qaaz: qaaz) }
 
     before do
-      subject.data_model.stub(:data_fields).and_return(data_fields)
+      subject.data_model.stub(infer_fields?: false)
+      klass.data_model.stub(infer_fields?: false)
     end
 
-    context 'when the model has fields that are not defined in the data model' do
-      let(:data_fields) { subject.fields - extra_fields }
-      let(:extra_fields) { subject.fields[0..-2] }
-
-      it 'raises an exception with a message' do
-        expect { subject.save }.to raise_error("Tried to save a #{subject.class.name} with fields not specified in #{subject.data_model.name}: #{extra_fields.join(', ')}")
-      end
+    it 'initializes the object and assigns values to the fields' do
+      subject.meh.should == meh
+      subject.foo.should == foo
+      subject.bar.should == bar
+      subject.baz.should == baz
+      subject.qaaz.should == qaaz
     end
 
-    context 'when it has not yet been persisted to the mince data model' do
+    it 'can set the assignable fields outside of the initilizer' do
+      subject.foo = 'foo1'
+      subject.foo.should == 'foo1'
+      subject.attributes = { foo: 'foo2' }
+      subject.foo.should == 'foo2'
+    end
+
+    it 'cannot set the readonly field outside of the initilizer' do
+      subject.attributes = { bar: 'bar1' }
+      subject.bar.should == bar
+    end
+
+    it 'fields are readonly by default' do
+      subject.attributes = { meh: 'meh1' }
+      subject.meh.should == meh
+    end
+
+    describe 'saving' do
+      let(:id) { mock 'id' }
+      let(:data_fields) { subject.fields }
+
       before do
-        subject.data_model.stub(:store => id)
+        subject.data_model.stub(:data_fields).and_return(data_fields)
       end
 
-      it 'stores the model' do
-        subject.data_model.should_receive(:store).with(subject).and_return(id)
+      context 'when the data model is inferring fields from the model' do
+        before do
+          subject.data_model.stub(:store => id, infer_fields?: true, data_fields: nil)
+        end
 
-        subject.save
+        it 'stores the model' do
+          subject.data_model.should_receive(:store).with(subject).and_return(id)
+
+          subject.save
+        end
+
+        it 'assigns the id' do
+          subject.save
+
+          subject.id.should == id
+        end
       end
 
-      it 'assigns the id' do
-        subject.save
+      context 'when the model has fields that are not defined in the data model' do
+        let(:data_fields) { subject.fields - extra_fields }
+        let(:extra_fields) { subject.fields[0..-2] }
 
-        subject.id.should == id
+        it 'raises an exception with a message' do
+          expect { subject.save }.to raise_error("Tried to save a #{subject.class.name} with fields not specified in #{subject.data_model.name}: #{extra_fields.join(', ')}")
+        end
       end
-    end
 
-    context 'when it has already been persisted to the mince data model' do
-      let(:subject) { klass.new(id: id) }
+      context 'when it has not yet been persisted to the mince data model' do
+        before do
+          subject.data_model.stub(:store => id)
+        end
 
-      it 'updates the model' do
-        subject.data_model.should_receive(:update).with(subject)
+        it 'stores the model' do
+          subject.data_model.should_receive(:store).with(subject).and_return(id)
 
-        subject.save
+          subject.save
+        end
+
+        it 'assigns the id' do
+          subject.save
+
+          subject.id.should == id
+        end
+      end
+
+      context 'when it has already been persisted to the mince data model' do
+        let(:subject) { klass.new(id: id) }
+
+        it 'updates the model' do
+          subject.data_model.should_receive(:update).with(subject)
+
+          subject.save
+        end
       end
     end
   end
 
-  describe "Query Methods:" do
+  describe Model, "Query Methods:" do
+    let(:klass) do
+      Class.new do
+        include Mince::Model
+
+        data_model Class.new
+
+        field :meh
+        field :foo, assignable: true
+        field :bar, assignable: false
+        fields :baz, :qaaz
+      end
+    end
+
+    before do
+      klass.data_model.stub(infer_fields?: false)
+    end
+
     it 'provides a way to easily create a new record' do
       model = mock 'model'
       data = mock 'data'
@@ -135,4 +177,3 @@ describe Mince::Model do
     end
   end
 end
-

@@ -1,3 +1,4 @@
+require 'debugger'
 require 'mince'
 require 'hashy_db'
 require 'active_support/core_ext/numeric/time'
@@ -23,7 +24,7 @@ describe 'A data model with inferred fields' do
   describe 'a model with a limited set of mince model mixins' do
     let(:model_klass) do
       Class.new do
-        include Mince::Model::Fields
+        include Mince::Model
 
         data_model(
           Class.new do
@@ -33,7 +34,10 @@ describe 'A data model with inferred fields' do
             infer_fields_from_model
           end
         )
-        fields :brand, :price, :type, :color
+        field :brand, assignable: true
+        field :price, assignable: true
+        field :type, assignable: true
+        field :color, assignable: true
       end
     end
 
@@ -44,8 +48,15 @@ describe 'A data model with inferred fields' do
       subject.color.should == color
     end
 
-    it 'cannot be persisted to the mince data interface' do
-      subject.respond_to?(:save).should be_false
+    it 'persists the data when saved' do
+      subject.save
+
+      all = model_klass.all
+      all.size.should == 1
+      all.first.brand.should == brand
+      all.first.price.should == price
+      all.first.type.should == type
+      all.first.color.should == color
     end
   end
 end
