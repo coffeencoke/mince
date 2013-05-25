@@ -23,6 +23,11 @@ module Mince
           new d if d
         end
 
+        # Finds all fields that match the given field value pair
+        def all_by_field(field, value)
+          data_model.all_by_field(field, value).map{|a| new(a) }
+        end
+
         # Finds all fields that match the given hash
         def all_by_fields(hash)
           data_model.all_by_fields(hash).map{|a| new(a) }

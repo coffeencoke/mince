@@ -51,13 +51,41 @@ shared_examples_for 'a model using mince model finders' do
     it { should == models }
   end
 
-  describe 'finding all by fields' do
+  describe 'finding all by fields by a given hash' do
     subject { klass.all_by_fields(hash) }
 
     let(:hash) { mock }
 
     before do
       klass.data_model.stub(:all_by_fields).with(hash).and_return(data)
+    end
+
+    context 'when a record exists' do
+      let(:data) { [mock] }
+      let(:model) { mock }
+
+      before do
+        klass.stub(:new).with(data.first).and_return(model)
+      end
+
+      it { should == [model] }
+    end
+
+    context 'when a record does not exist' do
+      let(:data) { [] }
+
+      it { should be_empty }
+    end
+  end
+
+  describe 'finding all by fields by a given field value pair' do
+    subject { klass.all_by_field(field, value) }
+
+    let(:field) { mock }
+    let(:value) { mock }
+
+    before do
+      klass.data_model.stub(:all_by_field).with(field, value).and_return(data)
     end
 
     context 'when a record exists' do
