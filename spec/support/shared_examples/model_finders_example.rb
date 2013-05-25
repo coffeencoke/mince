@@ -7,6 +7,34 @@ shared_examples_for 'a model using mince model finders' do
     end
   end
 
+  describe 'finding by one field' do
+    subject { klass.find_by_field(field, value) }
+
+    let(:field) { mock }
+    let(:value) { mock }
+
+    before do
+      klass.data_model.stub(:find_by_field).with(field, value).and_return(data)
+    end
+
+    context 'when a record exists' do
+      let(:data) { mock }
+      let(:model) { mock }
+
+      before do
+        klass.stub(:new).with(data).and_return(model)
+      end
+
+      it { should == model }
+    end
+
+    context 'when a record does not exist' do
+      let(:data) { nil }
+
+      it { should be_nil }
+    end
+  end
+
   describe 'getting all models' do
     subject { klass.all }
 

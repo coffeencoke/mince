@@ -11,12 +11,19 @@ module Mince
       end
 
       module ClassMethods
-        # Sets or returns the data model class for the model
+        # Finds a model for the given field value pair
+        def find_by_field(field, value)
+          d = data_model.find_by_field(field, value)
+          new d if d
+        end
+
+        # Finds a model for the given hash
         def find_by_fields(hash)
           d = data_model.find_by_fields(hash)
           new d if d
         end
 
+        # Finds all fields that match the given hash
         def all_by_fields(hash)
           data_model.all_by_fields(hash).map{|a| new(a) }
         end
