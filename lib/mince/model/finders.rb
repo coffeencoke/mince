@@ -12,10 +12,16 @@ module Mince
 
       module ClassMethods
         # Sets or returns the data model class for the model
-        def find_by_fields(*fields)
-          raise 'not implemented'
+        def find_by_fields(hash)
+          d = data_model.find_by_fields(hash)
+          new d if d
         end
 
+        def all_by_fields(hash)
+          data_model.all_by_fields(hash).map{|a| new(a) }
+        end
+
+        # Finds or initializes a model for the given hash
         def find_or_initialize_by(hash)
           find_by_fields(hash) || new(hash)
         end

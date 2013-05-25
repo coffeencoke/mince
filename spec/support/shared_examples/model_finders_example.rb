@@ -20,8 +20,60 @@ shared_examples_for 'a model using mince model finders' do
       klass.stub(:new).with(datum).and_return(model)
     end
 
-    it 'returns an array of all models' do
-      subject.should == models
+    it { should == models }
+  end
+
+  describe 'finding all by fields' do
+    subject { klass.all_by_fields(hash) }
+
+    let(:hash) { mock }
+
+    before do
+      klass.data_model.stub(:all_by_fields).with(hash).and_return(data)
+    end
+
+    context 'when a record exists' do
+      let(:data) { [mock] }
+      let(:model) { mock }
+
+      before do
+        klass.stub(:new).with(data.first).and_return(model)
+      end
+
+      it { should == [model] }
+    end
+
+    context 'when a record does not exist' do
+      let(:data) { [] }
+
+      it { should be_empty }
+    end
+  end
+
+  describe 'finding by fields' do
+    subject { klass.find_by_fields(hash) }
+
+    let(:hash) { mock }
+
+    before do
+      klass.data_model.stub(:find_by_fields).with(hash).and_return(data)
+    end
+
+    context 'when a record exists' do
+      let(:data) { mock }
+      let(:model) { mock }
+
+      before do
+        klass.stub(:new).with(data).and_return(model)
+      end
+
+      it { should == model }
+    end
+
+    context 'when a record does not exist' do
+      let(:data) { nil }
+
+      it { should be_nil }
     end
   end
 
@@ -37,9 +89,7 @@ shared_examples_for 'a model using mince model finders' do
     context 'when a record exists' do
       let(:model) { mock }
 
-      it 'returns the model' do
-        subject.should == model
-      end
+      it { should == model }
     end
 
     context 'when a record does not exist' do
@@ -50,9 +100,7 @@ shared_examples_for 'a model using mince model finders' do
         klass.stub(:new).with(hash).and_return(new_model)
       end
 
-      it 'returns a new model for the hash' do
-        subject.should == new_model
-      end
+      it { should == new_model }
     end
   end
 
@@ -73,17 +121,13 @@ shared_examples_for 'a model using mince model finders' do
         klass.stub(:new).with(data).and_return(model)
       end
 
-      it 'returns the model' do
-        subject.should == model
-      end
+      it { should == model }
     end
 
     context 'when it does not exist' do
       let(:data) { nil }
 
-      it 'returns nothing' do
-        subject.should be_nil
-      end
+      it { should be_nil }
     end
   end
 end
