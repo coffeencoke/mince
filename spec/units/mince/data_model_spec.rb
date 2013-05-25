@@ -100,6 +100,7 @@ describe Mince::DataModel, 'Class Methods' do
   let(:interface) { mock 'mince data interface class', generate_unique_id: unique_id, primary_key: primary_key }
   let(:unique_id) { mock 'id' }
   let(:primary_key) { "custom_id" }
+  let(:fields) { [:brand, :type, :color, :price] }
 
   before do
     Mince::Config.stub(:interface => interface)
@@ -113,6 +114,17 @@ describe Mince::DataModel, 'Class Methods' do
     klass.send(:include, Mince::DataModel::Timestamps)
 
     klass.timestamps?.should be_true
+  end
+
+  it 'knows the fields it has' do
+    klass.data_fields.should =~ fields
+  end
+
+  it 'does not duplicate data fields' do
+    pending
+    klass.data_fields(:brand)
+
+    klass.data_fields.should =~ fields
   end
 
   describe "inserting data" do
