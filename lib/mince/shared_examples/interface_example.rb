@@ -171,7 +171,11 @@ shared_examples_for 'a mince interface' do
   end
 
   def convert(hash)
-    HashWithIndifferentAccess.new(hash)
+    HashWithIndifferentAccess.new(hash).tap do |h|
+      if h[:created_at]
+        h[:created_at] = h[:created_at].to_s
+      end
+    end
   end
 
   def convert_each(ary)
