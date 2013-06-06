@@ -51,6 +51,34 @@ shared_examples_for 'a model using mince model finders' do
     it { should == models }
   end
 
+  describe 'finding all before a given time for a given field' do
+    subject { klass.all_before(field, time) }
+
+    let(:field) { mock }
+    let(:time) { mock }
+
+    before do
+      klass.data_model.stub(:all_before).with(field, time).and_return(data)
+    end
+
+    context 'when records exist' do
+      let(:data) { [mock] }
+      let(:model) { mock }
+
+      before do
+        klass.stub(:new).with(data.first).and_return(model)
+      end
+
+      it { should == [model] }
+    end
+
+    context 'when a record does not exist' do
+      let(:data) { [] }
+
+      it { should be_empty }
+    end
+  end
+
   describe 'finding all by fields by a given hash' do
     subject { klass.all_by_fields(hash) }
 
@@ -60,7 +88,7 @@ shared_examples_for 'a model using mince model finders' do
       klass.data_model.stub(:all_by_fields).with(hash).and_return(data)
     end
 
-    context 'when a record exists' do
+    context 'when records exist' do
       let(:data) { [mock] }
       let(:model) { mock }
 

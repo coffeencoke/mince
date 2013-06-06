@@ -48,6 +48,11 @@ module Mince
           a = data_model.find(id)
           new a if a
         end
+
+        # Returns all models where the field has a value that is before the given time
+        def all_before(field, time)
+          data_model.all_before(field, time).map{|a| new(a) }
+        end
       end
     end
   end
