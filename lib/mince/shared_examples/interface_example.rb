@@ -2,10 +2,10 @@ require_relative '../../mince'
 
 # = Shared example for a Mince Interface
 #
-# This is an Rspec Shared Example.  It provides the ability to test 
+# This is an Rspec Shared Example.  It provides the ability to test
 # shared behavior of objects without duplication.
 #
-# Use this shared example as documentation on what API a mince data interface 
+# Use this shared example as documentation on what API a mince data interface
 # must implement and as a specification and integration test while developing
 # your mince data interface.
 #
@@ -15,7 +15,7 @@ require_relative '../../mince'
 # as a gem dependency in my library (in your Gemfile or gemspec file). I would
 # add Rspec, create a new spec file at spec/integration/mince_interface_spec.rb
 # with the following contents
-#   
+#
 #   require_relative '../../lib/my_mince_mysql'
 #   require 'mince/shared_examples/interface_example'
 #
@@ -26,9 +26,9 @@ require_relative '../../mince'
 #
 #     it_behaves_like 'a mince interface'
 #   end
-# 
+#
 # Run your spec
-# 
+#
 #   bundle exec spec rspec/integration/mince_inerface_spect.rb
 #
 # Make the failures pass, when there are no failures your interface is fully
@@ -42,9 +42,9 @@ shared_examples_for 'a mince interface' do
     let(:interface) { Mince::Config.interface }
     let(:primary_key) { interface.primary_key }
 
-    let(:data1) { { primary_key => 1, field_1: 'value 1', field_2: 3, field_3: [1, 2, 3], shared_between_1_and_2: 'awesome_value', :some_array => [1, 2, 3, 4]} }
-    let(:data2) { { primary_key => 2, field_1: 'value 1.2', field_2: 6, shared_between_1_and_2: 'awesome_value', :some_array => [4, 5, 6]} }
-    let(:data3) { { primary_key => 3, field_1: 'value 3', field_2: 9, shared_between_1_and_2: 'not the same as 1 and 2', :some_array => [1, 7]} }
+    let(:data1) { { primary_key => 1, field_1: 'value 1', field_2: 3, field_3: [1, 2, 3], shared_between_1_and_2: 'awesome_value', :some_array => [1, 2, 3, 4], created_at: (Time.now.utc - 500000) } }
+    let(:data2) { { primary_key => 2, field_1: 'value 1.2', field_2: 6, shared_between_1_and_2: 'awesome_value', :some_array => [4, 5, 6], created_at: (Time.now.utc - 1000) } }
+    let(:data3) { { primary_key => 3, field_1: 'value 3', field_2: 9, shared_between_1_and_2: 'not the same as 1 and 2', :some_array => [1, 7], created_at: (Time.now.utc - 50) } }
 
     before do
       interface.clear
@@ -57,7 +57,7 @@ shared_examples_for 'a mince interface' do
     end
 
     describe "Generating a primary key" do
-      subject do 
+      subject do
         (1..number_of_records).map do |salt|
           interface.generate_unique_id(salt)
         end
@@ -80,7 +80,7 @@ shared_examples_for 'a mince interface' do
 
     it 'can delete a collection' do
       interface.delete_collection(:some_collection)
-      
+
       interface.find_all(:some_collection).to_a.should == []
     end
 
@@ -126,6 +126,10 @@ shared_examples_for 'a mince interface' do
 
     it 'can get all records of a specific key value' do
       convert_each(interface.get_all_for_key_with_value(:some_collection, :shared_between_1_and_2, 'awesome_value')).should == convert_each([data1, data2])
+    end
+
+    it 'can get all records for a field before a given time' do
+      convert_each(interface.all_before(:some_collection, :created_at, Time.now.utc - 500)).should == convert_each([data1, data2])
     end
 
     it 'can get all records where a value includes any of a set of values' do
