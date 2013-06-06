@@ -201,9 +201,10 @@ module Mince # :nodoc:
       # Finds all records that match a set of key / value pairs
       #
       # @param [Symbol] field the field to query for
-      # @returns [Time] Time object to find all records before this time
-      def all_before(field, time)
-        translate_each_from_interface interface.all_before(data_collection, field, time)
+      # @param [*] Time object to find all records where field is less than value
+      # @returns [Array] the set of records matching all key / value pairs
+      def all_before(field, value)
+        translate_each_from_interface interface.all_before(data_collection, field, value)
       end
 
       # Finds One record that matches all of the field / value pairs
