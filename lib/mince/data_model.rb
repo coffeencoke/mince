@@ -190,12 +190,20 @@ module Mince # :nodoc:
         translate_each_from_interface interface.get_all_for_key_with_value(data_collection, field, value)
       end
 
-      # Finds all recurds that match a set of key / value pairs
+      # Finds all records that match a set of key / value pairs
       #
       # @param [Hash] hash a hash of field / value pairs to query records for
       # @returns [Array] the set of records matching all key / value pairs
       def all_by_fields(hash)
         translate_each_from_interface interface.get_by_params(data_collection, hash)
+      end
+
+      # Finds all records that match a set of key / value pairs
+      #
+      # @param [Symbol] field the field to query for
+      # @returns [Time] Time object to find all records before this time
+      def all_before(field, time)
+        translate_each_from_interface interface.all_before(data_collection, field, time)
       end
 
       # Finds One record that matches all of the field / value pairs

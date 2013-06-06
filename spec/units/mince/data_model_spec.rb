@@ -237,6 +237,19 @@ describe Mince::DataModel, 'Class Methods' do
     end
   end
 
+  describe "getting all data models where the field contains a value before the given time" do
+    let(:data_model) { {primary_key => 'some id'} }
+    let(:expected_data_models) { [HashWithIndifferentAccess.new({:id => 'some id', primary_key => 'some id'})] }
+    let(:data_models) { [data_model] }
+    subject { described_class.all_before(:some_field, 'some time') }
+
+    it 'returns the stored data models' do
+      interface.should_receive(:all_before).with(collection_name, :some_field, 'some time').and_return(data_models)
+
+      subject.should == expected_data_models
+    end
+  end
+
   describe "removing a value from an array for a data model" do
     let(:data_model_id) { '1234567' }
 
