@@ -5,7 +5,7 @@ module Mince
     end
 
     def self.minor
-      2
+      3
     end
 
     def self.patch
